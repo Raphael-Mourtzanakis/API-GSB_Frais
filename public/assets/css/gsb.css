@@ -1,0 +1,61 @@
+h1
+    {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+.form-group > label
+    {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+.table-message
+    {
+        font-size: 20px;
+        text-align: center;
+    }
+
+.nav-title
+    {
+        text-align: center;
+        align-content: center;
+        color: #5e5e5e;
+        font-weight: 600;
+        background-color: #eeeeee;
+        padding: 5px 8px;
+        border-radius: 5px;
+        cursor: default;
+        margin-right: 5px;
+    }
+
+.nav-text
+    {
+        text-align: center;
+        align-content: center;
+        color: #5e5e5e;
+        margin-right: 5px;
+    }
+
+.nav-sepration
+    {
+        background-color: rgba(0, 0, 0, 0.08);
+        border-radius: 100px;
+        height: 40px;
+        width: 4px;
+        margin-left: 25px; margin-right: 25px;
+    }
+select, option, ::-webkit-inner-spin-button, input[type="month"]
+    {
+        cursor: pointer;
+    }
+
+#suppr
+    {
+        float: right;
+    }
+
+.from-error
+    {
+        margin-top: 15px;
+    }
