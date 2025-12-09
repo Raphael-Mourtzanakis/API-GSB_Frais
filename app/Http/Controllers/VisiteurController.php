@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Visiteur;
 use App\Services\VisiteurService;
@@ -48,5 +49,68 @@ class VisiteurController extends Controller {
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
+    }
+
+    public function authAPI(Request $request)
+    {
+        try {
+            $request->validate([
+                'login'    => 'required',
+                'password' => 'required'
+            ]);
+
+            $login    = $request->json('login');
+            $password = $request->json('password');
+
+            $identifiants = [
+                'login_visiteur' => $login,
+                'password'       => $password
+            ];
+
+            if (!Auth::attempt($identifiants)) {
+                return response()->json(['error' => 'Identifiant ou mot de passe incorrect'], 401);
+            }
+
+            // création token et retour informations
+            $visiteur = $request->user();
+            $token = $visiteur->createToken('authToken')->plainTextToken;
+
+            return response()->json([
+                'token'      => $token,
+                'token_type' => 'Bearer',
+                'visiteur'   => [
+                    'id_visiteur'    => $visiteur->id_visiteur,
+                    'nom_visiteur'   => $visiteur->nom_visiteur,
+                    'prenom_visiteur'=> $visiteur->prenom_visiteur,
+                    'type_visiteur'  => $visiteur->type_visiteur,
+                ]
+            ]);
+
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function logoutAPI(Request $request)
+    {
+        try {
+            $request->user()->tokens()->delete();
+
+            return response()->json([
+                'status' => 'Utilisateur déconnecté'
+            ]);
+
+        } catch (Exception $exception) {
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], 500);
+        }
+    }
+
+    public function unauthorizedAPI()
+    {
+        return response()->json([
+            'error' => 'Accès non autorisé'
+        ], 401);
     }
 }
