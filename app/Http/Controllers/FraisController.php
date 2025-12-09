@@ -91,4 +91,24 @@ class FraisController extends Controller {
             return view('error', compact('exception'));
         }
     }
+
+    function getFraisAPI($id) {
+        return response()->json(Frais::query()->find($id));
+    }
+
+    function addFraisAPI(Request $request) {
+        $unFrais = new Frais();
+        $unFrais->id_etat          = $request->json('id_etat');
+        $unFrais->anneemois        = $request->json('annee-mois');
+        $unFrais->id_visiteur      = $request->json('id_visiteur');
+        $unFrais->nbjustificatifs  = $request->json('nb_justificatifs');
+        $unFrais->datemodification = now();
+        $unFrais->montantvalide    = $request->json('montant_valide');
+        $unFrais->save();
+
+        return response()->json([
+            'status' => 'Frais ajouté',
+            'data'   => $unFrais,
+        ]);
+    }
 }
