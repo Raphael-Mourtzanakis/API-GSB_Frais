@@ -93,22 +93,65 @@ class FraisController extends Controller {
     }
 
     function getFraisAPI($id) {
-        return response()->json(Frais::query()->find($id));
+        try {
+            $service = new FraisService();
+            $unFrais = $service->getUnFrais($id);
+            return json_encode($unFrais);
+        } catch(Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
     }
 
     function addFraisAPI(Request $request) {
-        $unFrais = new Frais();
-        $unFrais->id_etat          = $request->json('id_etat');
-        $unFrais->anneemois        = $request->json('annee-mois');
-        $unFrais->id_visiteur      = $request->json('id_visiteur');
-        $unFrais->nbjustificatifs  = $request->json('nb_justificatifs');
-        $unFrais->datemodification = now();
-        $unFrais->montantvalide    = $request->json('montant_valide');
-        $unFrais->save();
+        try {
+            $service = new FraisService();
+            $unFrais = new Frais();
+            $unFrais->id_etat = $request->json('id_etat');
+            $unFrais->anneemois = $request->json('anneemois');
+            $unFrais->id_visiteur = $request->json('id_visiteur');
+            $unFrais->nbjustificatifs = $request->json('nbjustificatifs');
+            $unFrais->datemodification = today();
+            $unFrais->montantvalide = $request->json('datemodification');
+            $service->saveUnFrais($unFrais);
 
-        return response()->json([
-            'status' => 'Frais ajouté',
-            'data'   => $unFrais,
-        ]);
+            return response()->json([
+                'status' => 'Frais ajouté',
+                'data' => $unFrais,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function listFraisAPI($idVisiteur) {
+        try {
+            $service = new FraisService();
+            $desFrais = $service->getListFrais($idVisiteur);
+            return json_encode($desFrais);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function updateFraisAPI(Request $request) {
+        try {
+            $service = new FraisService();
+            $unFrais = $service->getUnFrais($request->json('id_frais'));
+            $ancienFrais = $service->getUnFrais($request->json('id_frais'));
+            $unFrais->id_etat = $request->json('id_etat');
+            $unFrais->anneemois = $request->json('anneemois');
+            $unFrais->nbjustificatifs = $request->json('nbjustificatifs');
+            $unFrais->datemodification = today();
+            $unFrais->montantvalide = $request->json('montantvalide');
+            $service->saveUnFrais($unFrais);
+
+            return response()->json([
+                'status' => 'Frais modifié',
+                'old_data' => $ancienFrais,
+                'new_data' => $unFrais,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
     }
 }
