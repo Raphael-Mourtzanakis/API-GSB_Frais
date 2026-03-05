@@ -38,6 +38,52 @@ h1
         margin-right: 5px;
     }
 
+.navbar-brand
+    {
+        transition: 0.2s ease;
+    }
+.navbar-brand:hover
+    {
+        scale: 105%;
+        transition: 0.15s ease;
+    }
+.navbar-brand:active
+    {
+        scale: 95%;
+        transition: 0.1s ease;
+    }
+
+.nav-item
+    {
+        border-radius: 100px;
+        padding: 0px 4px;
+        transition: 0.25s ease;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+.nav-item:hover
+    {
+        background-color: rgba(0, 0, 0, 0.03);
+        transition: 0.2s ease;
+    }
+.nav-item:active
+    {
+        background-color: rgba(0, 0, 0, 0.08);
+        transition: 0.15s ease;
+        scale: 0.95;
+    }
+
+.nav-item_group
+    {
+        display: flex;
+        gap: 25px;
+    }
+
+.nav-category
+{
+    display: flex;
+    gap: 5px;
+}
+
 .nav-sepration
     {
         background-color: rgba(0, 0, 0, 0.08);
