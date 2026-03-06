@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Etat extends Model
+class Praticien extends Model
 {
-    protected $table = "etat";
-    protected $primaryKey = "id_etat";
+    protected $table = "praticien";
+    protected $primaryKey = "id_praticien";
     public $timestamps = false;
 }

@@ -56,20 +56,63 @@ h1
 .nav-item
     {
         border-radius: 100px;
-        padding: 0px 4px;
+        padding: 0 4px;
         transition: 0.25s ease;
         background-color: rgba(255, 255, 255, 0.3);
+        box-shadow: rgba(0, 0, 0, 0.05) 0 0 5px;
     }
 .nav-item:hover
     {
         background-color: rgba(0, 0, 0, 0.03);
         transition: 0.2s ease;
+        box-shadow: none;
     }
 .nav-item:active
     {
         background-color: rgba(0, 0, 0, 0.08);
         transition: 0.15s ease;
         scale: 0.95;
+        box-shadow: none;
+    }
+
+.navbar-nav
+    {
+        gap: 5px;
+    }
+
+.login-button
+    {
+        background-color: #27ceff;
+    }
+.login-button:hover
+    {
+        background-color: #27edff;
+    }
+.login-button:active
+    {
+        background-color: #27a5ff;
+    }
+
+.logout-button
+    {
+        background-color: #ff8080;
+    }
+.logout-button:hover
+    {
+        background-color: #ffa7a7;
+    }
+.logout-button:active
+    {
+        background-color: #dd7171;
+    }
+
+.nav-form
+    {
+        border-radius: 5px;
+        padding: 3px 6px;
+        transition: 0.25s ease;
+        background-color: rgb(255, 255, 255);
+        border: rgb(222, 222, 222) solid 0.13rem;
     }
 
 .nav-item_group

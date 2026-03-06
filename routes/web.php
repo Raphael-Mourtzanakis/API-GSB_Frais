@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VisiteurController;
 use App\Http\Controllers\FraisController;
 use App\Http\Controllers\FraisHFController;
+use App\Http\Controllers\PraticienController;
 
 Route::get('/', function () {
     return view('home');
@@ -20,3 +21,6 @@ Route::post('/validerFrais', [FraisController::class, 'validFrais']);
 Route::get('/supprimerFrais/{id}', [FraisController::class, 'removeFrais']);
 
 Route::get('/listerFraisHF/{id_frais}', [FraisHFController::class, 'listFraisHF']);
+
+Route::get('/rechercherPraticien', [PraticienController::class, 'searchPraticien']);
+Route::get('/resultatRecherchePraticien/{recherche}', [PraticienController::class, 'searchResultPraticien']);

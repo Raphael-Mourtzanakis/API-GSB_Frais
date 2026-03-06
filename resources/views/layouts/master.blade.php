@@ -38,10 +38,10 @@
                     </div>
 
                     <div class="nav-category">
-                        <span class="nav-title">Praciticien</span>
+                        <span class="nav-title">Praticien</span>
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/rechercherPracticien') }}">Rechercher</a>
+                                <a class="nav-link" href="{{ url('/rechercherPraticien') }}">Rechercher</a>
                             </li>
                         </ul>
                     </div>
@@ -51,7 +51,7 @@
                 <ul class="navbar-nav ms-auto">
                     <b class="nav-text">{{session('visiteur')}}</b>
                     <span class="nav-sepration"></span>
-                    <li class="nav-item">
+                    <li class="nav-item logout-button">
                         <a class="nav-link" style="cursor: pointer;"
                            onclick="
                            if (confirm ('Êtes vous sûr de vouloir vous déconnecter ?')) {
@@ -65,7 +65,7 @@
 
                 @else
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
+                    <li class="nav-item login-button">
                         <a class="nav-link" href="{{ url('/connecter') }}">Se connecter</a>
                     </li>
                 </ul>
