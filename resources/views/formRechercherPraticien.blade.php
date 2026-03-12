@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <form method="GET" action="{{ url('/resultatRecherchePraticien/{recherche}') }}">
+    <form method="POST" action="{{ url('/Praticien/lister') }}">
         {{ csrf_field() }}
 
         <h1>Rechercher un praticien</h1>

@@ -59,7 +59,7 @@ class FraisController extends Controller {
 
             $service->saveUnFrais($unFrais);
 
-            return redirect("/listerFrais");
+            return redirect("/Frais/lister");
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
@@ -86,7 +86,7 @@ class FraisController extends Controller {
             $service = new FraisService();
             $service->deleteFrais($id,$id_visiteur);
 
-            return redirect("/listerFrais");
+            return redirect("/Frais/lister");
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }

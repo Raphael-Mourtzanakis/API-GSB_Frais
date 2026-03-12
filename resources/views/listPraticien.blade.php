@@ -3,8 +3,17 @@
 @section('content')
 
     <div class="container">
-        <h1>Résultat de recherche de praticien</h1>
+        <h1>Liste des praticiens</h1>
     </div>
+
+    <form method="POST" action="{{ url('/Praticien/lister') }}" class="resultat-recherche">
+        {{ csrf_field() }}
+        <p>Recherche : </p>
+        <input type="text" value="{{$search}}" name="recherche" class="form-control" placeholder="Rechercher un praticien par nom ou spécialité...">
+        <button type="submit" class="btn btn-primary">
+            Rechercher
+        </button>
+    </form>
 
     @if (isset($searchResult[0]["id_praticien"]))
     <table class="table table-bordered table-striped">
@@ -18,6 +27,8 @@
             <th>Coéfficient</th>
             <th>Type</th>
             <th>Lieu</th>
+            <th>Spécialités</th>
+
         </tr>
         </thead>
         <tbody>
@@ -31,6 +42,7 @@
                 <td>{{ $ligne->coef_praticien }}</td>
                 <td>{{ $ligne->lib_type_praticien }}</td>
                 <td>{{ $ligne->lieu_type_praticien }}</td>
+                <td><a href="{{url("/Praticien/specialites/".$ligne->id_praticien."/lister")}}">Voir</a></td>
             </tr>
         @endforeach
         </tbody>

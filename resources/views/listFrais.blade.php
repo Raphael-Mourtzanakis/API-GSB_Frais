@@ -28,7 +28,7 @@
                 <td>{{ $ligne->lib_etat }}</td>
                 <td>{{ $ligne->nbjustificatifs }}</td>
                 <td>{{ $ligne->montantvalide }} @if ($ligne->montantvalide ==! "") € @endif</td>
-                <td><a href="{{url("/editerFrais/".$ligne->id_frais)}}">Afficher</a></td>
+                <td><a href="{{url("/Frais/modifier/".$ligne->id_frais)}}">Afficher</a></td>
             </tr>
         @endforeach
         </tbody>

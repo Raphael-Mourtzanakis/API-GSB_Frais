@@ -29,10 +29,10 @@
                         <span class="nav-title">Frais</span>
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/listerFrais') }}">Lister</a>
+                                <a class="nav-link" href="{{ url('/Frais/lister') }}">Lister</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/ajouterFrais') }}">Ajouter</a>
+                                <a class="nav-link" href="{{ url('/Frais/ajouter') }}">Ajouter</a>
                             </li>
                         </ul>
                     </div>
@@ -41,7 +41,19 @@
                         <span class="nav-title">Praticien</span>
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/rechercherPraticien') }}">Rechercher</a>
+                                <a class="nav-link" href="{{ url('/Praticien/rechercher') }}">Rechercher</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-category">
+                        <span class="nav-title">Spécialité</span>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/Specialite/lister') }}">Lister</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/Specialite/ajouter') }}">Ajouter</a>
                             </li>
                         </ul>
                     </div>

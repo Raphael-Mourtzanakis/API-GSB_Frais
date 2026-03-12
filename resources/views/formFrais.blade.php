@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <form method="POST" action="{{ url('/validerFrais') }}">
+    <form method="POST" action="{{ url('/Frais/valider') }}">
         {{ csrf_field() }}
 
         <h1>@if ($unFrais->id_frais) Fiche @else Ajout @endif de frais</h1>
@@ -25,8 +25,8 @@
                 <div class="col-md-6">
                     <input type="number" name="montant-saisi" class="form-control " min="0" step="0.01" value="" disabled style="cursor: not-allowed">
                     <div class="col-md-12 col-md-offset-3" style="margin-top: 8px; @if (!$unFrais->id_frais) cursor: not-allowed; @endif">
-                        <a href="{{ url('listerFraisHF/'.$unFrais->id_frais) }}" class="btn btn-info @if (!$unFrais->id_frais) disabled @endif">Frais hors forfait</a>
-                        <a href="" class="btn btn-info @if (!$unFrais->id_frais) disabled @endif">Frais au forfait</a>
+                        <a @if ($unFrais->id_frais) href="{{ url('Frais/modifier/'.$unFrais->id_frais.'/hors-forfait/lister') }}" @endif class="btn btn-info @if (!$unFrais->id_frais)disabled @endif">Frais hors forfait</a>
+                        <a @if ($unFrais->id_frais) href="" @endif class="btn btn-info @if (!$unFrais->id_frais)disabled @endif">Frais au forfait</a>
                     </div>
                 </div>
             </div>
@@ -59,13 +59,13 @@
                         @if ($unFrais->id_frais) Modifier @else Valider @endif
                     </button>
                     <button type="button" class="btn btn-secondary"
-                            @if ($unFrais->id_frais) onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/listerFrais') }}';">
+                            @if ($unFrais->id_frais) onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/Frais/lister') }}';">
                             @else onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/') }}';">
                             @endif
                         Annuler
                     </button>
                     @if ($unFrais->id_frais)
-                        <a href="{{ url("/supprimerFrais/".$unFrais->id_frais) }}" id="suppr" class="btn btn-danger" onclick="if (confirm ('Supprimer cette fiche de frais ?'));">
+                        <a href="{{ url("/Frais/supprimer/".$unFrais->id_frais) }}" id="suppr" class="btn btn-danger" onclick="if (confirm ('Supprimer cette fiche de frais ?'));">
                             Supprimer
                         </a>
                     @endif

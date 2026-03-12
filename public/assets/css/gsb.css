@@ -149,3 +149,27 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
     {
         margin-top: 15px;
     }
+
+.resultat-recherche
+    {
+        display: flex;
+        margin-bottom: 10px;
+        gap: 10px;
+        align-items: center;
+    }
+
+.resultat-recherche p
+    {
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+.resultat-recherche input, .resultat-recherche button
+    {
+        margin-bottom: 12px;
+        /*border-radius: 5px;
+        border: #a0a0a0 solid 0.01rem;*/
+        max-width: 500px;
+        display: flex;
+        gap: 15px;
+    }

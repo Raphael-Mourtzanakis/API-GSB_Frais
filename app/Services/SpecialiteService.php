@@ -2,44 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\Praticien;
 use App\Models\Specialite;
-use App\Models\Posseder;
 use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
 
-class PraticienService
+class SpecialiteService
 {
-    public function getSearchResultPraticien($search)
-    {
-        try {
-            $praticiens = Praticien::query()
-                ->select()
-                ->where('praticien.nom_praticien', 'LIKE', '%'.$search.'%')
-                ->orWhere('type_praticien.lib_type_praticien', 'LIKE', '%'.$search.'%')
-                ->join("type_praticien", "type_praticien.id_type_praticien", "=", "praticien.id_type_praticien")
-                ->orderBy('praticien.nom_praticien')->orderBy('praticien.prenom_praticien')
-                ->get();
-
-            return $praticiens;
-        } catch (QueryException $exception) {
-            $userMessage = "Erreur d'accès à la base de données";
-            throw new UserException(
-                $userMessage,
-                $exception->getMessage(),
-                $exception->getCode()
-            );
-        }
-    }
-
-    public function getListSpecialites($id_praticien)
+    public function getListSpecialites()
     {
         try {
             $specialites = Specialite::query()
                 ->select()
-                ->where('posseder.id_praticien', '=', $id_praticien)
-                ->join("posseder", "specialite.id_specialite", "=", "posseder.id_specialite")
-                ->orderBy('specialite.lib_specialite')
+                ->orderBy('lib_specialite')
                 ->get();
 
             return $specialites;
@@ -53,9 +27,12 @@ class PraticienService
         }
     }
 
-    public function saveUneSpecialite(Posseder $posseder) {
+    public function getUneSpecialite($id) {
         try {
-            $posseder->save();
+            $unFrais = Specialite::query()
+                ->find($id);
+
+            return $unFrais;
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(
@@ -63,6 +40,34 @@ class PraticienService
                 $exception->getMessage(),
                 $exception->getCode()
             );
+        }
+    }
+
+    public function saveUneSpecialite(Specialite $specialite) {
+        try {
+            $specialite->save();
+        } catch (QueryException $exception) {
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
+        }
+    }
+
+    public function deleteSpecialite($id) {
+        try {
+            $unFrais = Specialite::query()
+                ->find($id);
+            $unFrais->delete();
+        } catch (QueryException $exception) {
+            if ($exception->getCode() == 23000) {
+                Session::put('erreur', $exception->getMessage());
+                return redirect(url('editerFrais/'.$id));
+            } else {
+                return view('error', compact('exception'));
+            }
         }
     }
 }
