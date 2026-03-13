@@ -32,7 +32,7 @@ class PraticienService
         }
     }
 
-    public function getListSpecialites($id_praticien)
+    public function getListSpecialitesDuPraticien($id_praticien)
     {
         try {
             $specialites = Specialite::query()
@@ -53,7 +53,7 @@ class PraticienService
         }
     }
 
-    public function saveUneSpecialite(Posseder $posseder) {
+    public function saveUneSpecialiteDePraticien(Posseder $posseder) {
         try {
             $posseder->save();
         } catch (QueryException $exception) {
@@ -63,6 +63,18 @@ class PraticienService
                 $exception->getMessage(),
                 $exception->getCode()
             );
+        }
+    }
+
+    public function deleteSpecialiteDePraticien($id_praticien,$id_specialite) {
+        try {
+            $posseder = Posseder::query()
+                ->select()
+                ->where('id_praticien', '=', $id_praticien)
+                ->where('id_specialite', '=', $id_specialite);
+            $posseder->delete();
+        } catch (QueryException $exception) {
+            return view('error', compact('exception'));
         }
     }
 }

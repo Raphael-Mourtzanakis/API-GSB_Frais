@@ -3,10 +3,32 @@
 @section('content')
 
     <div class="container">
-        <h1>Liste des spécialités</h1>
+        <h1>Liste des spécialités d'un praticien</h1>
     </div>
 
-    @if (isset($specialites[0]["id_specialite"]))
+    <form method="POST" action="{{ url('/Praticien/specialites/ajouter') }}" class="ajout-de-specialite">
+        {{ csrf_field() }}
+        <input type="hidden" name="id_praticien" class="form-control" value="{{$id_praticien}}" required>
+
+        <div class="form-group">
+            <label class="col-md-3">Ajouter une spécialité : </label>
+            <div class="col-md-6">
+                <select class="form-select form-control" name="id_specialite" required>
+                    <option value="">--- Sélectionnez une spécialité ---</option>
+                    @foreach ($specialites as $specialite)
+                        <option value="{{$specialite->id_specialite}}">{{$specialite->lib_specialite}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">
+                Ajouter
+            </button>
+        </div>
+    </form>
+
+    @if (isset($specialitesDuPraticien[0]["id_specialite"]))
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -15,16 +37,16 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($specialites as $ligne)
+        @foreach($specialitesDuPraticien as $ligne)
             <tr>
                 <td>{{ $ligne->lib_specialite }}</td>
-                <td><a href="{{url("/Specialite/modifier/".$ligne->id_specialite)}}">Afficher</a></td>
+                <td><a onclick="return confirm('Supprimer cette spécialité de ce praticien ?')" href="{{url("/Praticien/specialites/".$id_praticien."/supprimer/".$ligne->id_specialite)}}"> Supprimer <i class="bi bi-trash"></i> </a>
             </tr>
         @endforeach
         </tbody>
         @else
         <div class="container table-message">
-            <p>Aucune spécialité trouvée.</p>
+            <p>Aucune spécialité trouvée à ce praticien.</p>
         </div>
         @endif
     </table>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Praticien;
 use App\Models\Specialite;
 use App\Models\Posseder;
+use App\Services\SpecialiteService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -32,20 +33,42 @@ class PraticienController extends Controller {
 
     public function listSpecialites($id_praticien) {
         try {
-            $service = new PraticienService();
-            $specialites = $service->getListSpecialites($id_praticien);
-            return view('listSpecialite', compact('specialites'));
+            $praticienService = new PraticienService();
+            $specialiteService = new SpecialiteService();
+            $specialitesDuPraticien = $praticienService->getListSpecialitesDuPraticien($id_praticien);
+            $specialites = $specialiteService->getListSpecialites();
+            return view('listSpecialiteDePraticien', compact('specialitesDuPraticien', 'specialites', 'id_praticien'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
     }
 
-    public function addSpecialite($id_praticien) { // Faire un formulaire avec une liste déroulante de spécialités qu'on choisit puis on clique sur ajouter pour l'ajouter à la liste des spécialités du praticien (ou sinon, mettre ce formulaire dans la page de la liste des spécialités)
+    public function addSpecialite(Request $request) { // Faire un formulaire avec une liste déroulante de spécialités qu'on choisit puis on clique sur ajouter pour l'ajouter à la liste des spécialités du praticien (ou sinon, mettre ce formulaire dans la page de la liste des spécialités)
         try {
-            $specialite = new Specialite();
-            return view('formSpecialiteDePraticien', compact('specialite', 'id_praticien'));
+            $service = new PraticienService();
+
+            $id_praticien = $request->input('id_praticien');
+
+            $posseder = new Posseder();
+            $posseder->id_praticien = $id_praticien;
+            $posseder->id_specialite = $request->input('id_specialite');
+
+            $service->saveUneSpecialiteDePraticien($posseder);
+
+            return redirect("/Praticien/specialites/".$id_praticien."/lister");
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
     }
+    public function removeSpecialite($id_praticien, $id_specialite) {
+        try {
+            $service = new PraticienService();
+            $service->deleteSpecialiteDePraticien($id_praticien, $id_specialite);
+
+            return redirect("/Praticien/specialites/".$id_praticien."/lister");
+        } catch (Exception $exception) {
+            return view('error', compact('exception'));
+        }
+    }
+
 }

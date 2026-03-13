@@ -27,8 +27,8 @@ Route::get('/Praticien/rechercher', [PraticienController::class, 'searchPraticie
 Route::post('/Praticien/lister', [PraticienController::class, 'listPraticien']);
 
 Route::get('/Praticien/specialites/{id_praticien}/lister', [PraticienController::class, 'listSpecialites']);
-Route::get('/Praticien/specialites/{id_praticien}/ajouter/{id_specialite}', [PraticienController::class, 'addSpecialites']);
-Route::get('/Praticien/specialites/{id_praticien}/supprimer/{id_specialite}', [PraticienController::class, 'removeSpecialites']);
+Route::post('/Praticien/specialites/ajouter', [PraticienController::class, 'addSpecialite']);
+Route::get('/Praticien/specialites/{id_praticien}/supprimer/{id_specialite}', [PraticienController::class, 'removeSpecialite']);
 
 Route::get('/Specialite/lister', [SpecialiteController::class, 'listSpecialite']);
 Route::get('/Specialite/ajouter', [SpecialiteController::class, 'addSpecialite']);

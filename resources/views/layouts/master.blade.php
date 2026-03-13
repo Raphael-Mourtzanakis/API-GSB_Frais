@@ -5,6 +5,7 @@
     <title>GSB Frais</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/icons/bootstrap-icons.css"/>
     <script> src="/assets/js/bootstrap.bundle.min.js" </script>
     <link rel="stylesheet" href="/assets/css/gsb.css"/>
 </head>
