@@ -58,16 +58,15 @@ class FraisHFController extends Controller {
         }
     }
 
-    public function editFraisHF($id) {
+    public function editFraisHF($id_frais, $id_fraisHF) {
         try {
             $service = new FraisHFService();
-            $etats = $service->getListEtat();
-            $unFraisHF = $service->getunFraisHF($id);
+            $unFraisHF = $service->getunFraisHF($id_frais, $id_fraisHF);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
 
-            return view('formFrais', compact('unFraisHF', 'etats', 'erreur'));
+            return view('formFraisHF', compact('unFraisHF', 'erreur'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }

@@ -3,19 +3,19 @@
 @section('content')
 
     <div class="container">
-        <h1>Liste des spécialités d'un praticien</h1>
+        <h1>Liste des spécialités du praticien {{$praticien->prenom_praticien}} {{$praticien->nom_praticien}}</h1>
     </div>
 
     <form method="POST" action="{{ url('/Praticien/specialites/ajouter') }}" class="ajout-de-specialite">
         {{ csrf_field() }}
-        <input type="hidden" name="id_praticien" class="form-control" value="{{$id_praticien}}" required>
+        <input type="hidden" name="id_praticien" class="form-control" value="{{$praticien->id_praticien}}" required>
 
         <div class="form-group">
             <label class="col-md-3">Ajouter une spécialité : </label>
             <div class="col-md-6">
                 <select class="form-select form-control" name="id_specialite" required>
                     <option value="">--- Sélectionnez une spécialité ---</option>
-                    @foreach ($specialites as $specialite)
+                    @foreach ($specialitesNonAttribues as $specialite)
                         <option value="{{$specialite->id_specialite}}">{{$specialite->lib_specialite}}</option>
                     @endforeach
                 </select>
@@ -40,7 +40,12 @@
         @foreach($specialitesDuPraticien as $ligne)
             <tr>
                 <td>{{ $ligne->lib_specialite }}</td>
-                <td><a onclick="return confirm('Supprimer cette spécialité de ce praticien ?')" href="{{url("/Praticien/specialites/".$id_praticien."/supprimer/".$ligne->id_specialite)}}"> Supprimer <i class="bi bi-trash"></i> </a>
+                <td>
+                    <a onclick="return confirm('Supprimer cette spécialité de ce praticien ?')"
+                       href="{{url("/Praticien/specialites/".$praticien->id_praticien."/supprimer/".$ligne->id_specialite)}}"
+                       class="delete-text">
+                            Supprimer <i class="bi bi-trash"></i>
+                    </a>
             </tr>
         @endforeach
         </tbody>

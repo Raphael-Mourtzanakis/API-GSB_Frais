@@ -33,11 +33,11 @@ class PraticienController extends Controller {
 
     public function listSpecialites($id_praticien) {
         try {
-            $praticienService = new PraticienService();
-            $specialiteService = new SpecialiteService();
-            $specialitesDuPraticien = $praticienService->getListSpecialitesDuPraticien($id_praticien);
-            $specialites = $specialiteService->getListSpecialites();
-            return view('listSpecialiteDePraticien', compact('specialitesDuPraticien', 'specialites', 'id_praticien'));
+            $service = new PraticienService();
+            $specialitesDuPraticien = $service->getListSpecialitesDuPraticien($id_praticien);
+            $specialitesNonAttribues = $service->getListSpecialitesNonAttribues($id_praticien);
+            $praticien = $service->getUnPraticien($id_praticien);
+            return view('listSpecialiteDePraticien', compact('specialitesDuPraticien', 'specialitesNonAttribues', 'praticien'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }

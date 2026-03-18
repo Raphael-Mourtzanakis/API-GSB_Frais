@@ -32,6 +32,45 @@ class PraticienService
         }
     }
 
+    public function getUnPraticien($id)
+    {
+        try {
+            $praticien = Praticien::query()
+                ->find($id);
+
+            return $praticien;
+        } catch (QueryException $exception) {
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
+        }
+    }
+
+    public function getListSpecialitesNonAttribues($id_praticien)
+    {
+        try {
+            $specialites = Specialite::whereNotIn('id_specialite', function ($query) use ($id_praticien) { // Requête par ChatGPT (mais ça marchait de juste lister tous les spécialités mais on risque une erreur en choisissant une spécialité que le praticien a déjà
+                $query->select('id_specialite')
+                    ->from('posseder')
+                    ->where('id_praticien', '=', $id_praticien);
+            })
+                ->orderBy('lib_specialite')
+                ->get();
+
+            return $specialites;
+        } catch (QueryException $exception) {
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
+        }
+    }
+
     public function getListSpecialitesDuPraticien($id_praticien)
     {
         try {

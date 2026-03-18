@@ -6,29 +6,23 @@
         <h1>Liste de vos frais hors forfait</h1>
     </div>
 
-    @if (isset($desFrais[0]["id_frais"]))
+    @if (isset($desFraisHF[0]["id_fraishorsforfait"]))
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
-                <th>Date de modification</th>
-                <th>Mois</th>
-                <th>Titre</th>
-                <th>État</th>
-                <th>Nombre de justificatifs</th>
-                <th>Montant validé</th>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Libellé</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            @foreach($desFrais as $ligne)
+            @foreach($desFraisHF as $ligne)
                 <tr>
-                    <td>{{ $ligne->datemodification }}</td>
-                    <td>{{ $ligne->anneemois }}</td>
-                    <td>{{ $ligne->titre }}</td>
-                    <td>{{ $ligne->lib_etat }}</td>
-                    <td>{{ $ligne->nbjustificatifs }}</td>
-                    <td>{{ $ligne->montantvalide }} @if ($ligne->montantvalide ==! "") € @endif</td>
-                    <td><a href="{{url("/editerFrais/".$ligne->id_frais)}}">Afficher</a></td>
+                    <td>{{ $ligne->date_fraishorsforfait }}</td>
+                    <td>{{ $ligne->montant_fraishorsforfait }} @if ($ligne->montant_fraishorsforfait ==! "") € @endif</td>
+                    <td>{{ $ligne->lib_fraishorsforfait }}</td>
+                    <td><a href="{{url("/Frais/modifier/".$ligne->id_frais)}}">Afficher</a></td>
                 </tr>
             @endforeach
             </tbody>

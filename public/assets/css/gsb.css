@@ -193,12 +193,22 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
         min-width: 500px;
     }
 
-.ajout-de-specialite div div
+.ajout-de-specialite div
     {
         display: inline;
     }
 
-.ajout-de-specialite div div label
-{
-    margin-right: 5000px;
-}
+.ajout-de-specialite div label
+    {
+        min-width: 200px;
+    }
+
+.ajout-de-specialite div button
+    {
+        margin-top: 32px;
+    }
+
+.delete-text
+    {
+        color: #c30000;
+    }

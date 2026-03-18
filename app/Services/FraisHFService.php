@@ -13,7 +13,7 @@ class FraisHFService
     public function getListFraisHF($id_frais,$id_visiteur) {
         try {
         $desFraisHF = FraisHF::query()
-            ->select()
+            ->select('fraishorsforfait.*')
             ->join('frais', 'frais.id_frais', '=', 'fraishorsforfait.id_frais')
             ->where('fraishorsforfait.id_frais', $id_frais)
             ->orderBy('fraishorsforfait.id_fraishorsforfait')
@@ -38,10 +38,11 @@ class FraisHFService
         }
     }
 
-    public function getUnFraisHF($id) {
+    public function getUnFraisHF($id_frais, $id_fraisHF) {
         try {
         $unFraisHF = FraisHF::query()
-            ->find($id);
+            ->find($id_fraisHF)
+            ->where('id_frais', '=', $id_frais);
 
         return $unFraisHF;
         } catch (QueryException $exception) {
