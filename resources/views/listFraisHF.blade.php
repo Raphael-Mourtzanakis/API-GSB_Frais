@@ -15,8 +15,8 @@
             <thead>
             <tr>
                 <th>Date de modification</th>
+				<th>Libellé</th>
                 <th>Montant</th>
-                <th>Libellé</th>
                 <th></th>
             </tr>
             </thead>
@@ -24,8 +24,8 @@
             @foreach($desFraisHF as $ligne)
                 <tr>
                     <td>{{ $ligne->date_fraishorsforfait }}</td>
+					<td>{{ $ligne->lib_fraishorsforfait }}</td>
                     <td>{{ $ligne->montant_fraishorsforfait }} @if ($ligne->montant_fraishorsforfait ==! "") € @endif</td>
-                    <td>{{ $ligne->lib_fraishorsforfait }}</td>
                     <td><a href="{{url("/Frais/modifier/".$ligne->id_frais."/hors-forfait/modifier/".$ligne->id_fraishorsforfait)}}">Afficher</a></td>
                 </tr>
             @endforeach
@@ -36,4 +36,8 @@
                 </div>
             @endif
         </table>
-        @endsection
+
+		<a href="{{ url("/Frais/modifier/".$id_frais) }}" class="btn btn-secondary">
+			Retour
+		</a>
+@endsection

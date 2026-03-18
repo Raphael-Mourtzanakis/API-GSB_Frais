@@ -43,7 +43,7 @@ class PraticienController extends Controller {
         }
     }
 
-    public function addSpecialite(Request $request) { // Faire un formulaire avec une liste déroulante de spécialités qu'on choisit puis on clique sur ajouter pour l'ajouter à la liste des spécialités du praticien (ou sinon, mettre ce formulaire dans la page de la liste des spécialités)
+    public function addSpecialite(Request $request) {
         try {
             $service = new PraticienService();
 
@@ -60,6 +60,7 @@ class PraticienController extends Controller {
             return view('error', compact('exception'));
         }
     }
+
     public function removeSpecialite($id_praticien, $id_specialite) {
         try {
             $service = new PraticienService();

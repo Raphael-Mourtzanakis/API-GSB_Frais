@@ -21,7 +21,7 @@ class FraisHFService
         $visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
             ->select('id_visiteur')
             ->where('id_frais', '=', $id_frais);
-        if ($visiteurDuFrais->id_visiteur !== $id_visiteur) {
+        if ($visiteurDuFrais->id_visiteur =! $id_visiteur) {
             throw new UserException(
                 "Tu n'as pas accès à ce frais hors forfait"
             );

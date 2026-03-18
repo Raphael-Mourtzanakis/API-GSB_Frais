@@ -22,7 +22,7 @@ class FraisFService
         $visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
             ->select('id_visiteur')
             ->where('id_frais', '=', $id_frais);
-        if ($visiteurDuFrais->id_visiteur !== $id_visiteur) {
+        if ($visiteurDuFrais->id_visiteur =! $id_visiteur) {
             throw new UserException(
                 "Tu n'as pas accès à ce frais hors forfait"
             );
@@ -48,12 +48,13 @@ class FraisFService
 		ORDER BY fraisforfait.lib_fraisforfait, fraisforfait.id_fraisforfait
 	*/
 
-    public function getUnFraisF($id_fraisF) {
+    public function getUnFraisF($id_frais, $id_fraisF) {
         try {
         $unFraisF = FraisF::query()
 			->select('fraisforfait.*', 'ligne_fraisforfait.quantite_ligne')
             ->join('ligne_fraisforfait', 'ligne_fraisforfait.id_fraisforfait', '=', 'fraisforfait.id_fraisforfait')
             ->where('ligne_fraisforfait.id_fraisforfait', '=', $id_fraisF)
+			->where('ligne_fraisforfait.id_frais', '=', $id_frais)
             ->get();
 
         return $unFraisF;
@@ -86,24 +87,47 @@ class FraisFService
         }
     }
 
-    public function deleteFraisF($id,$id_visiteur) {
+	public function getListFraisFNonAttribues($id_frais, $id_visiteur)
+    {
         try {
-            $unFraisF = FraisF::query()
-                ->find($id);
-                if ($unFraisF->id_visiteur =! $id_visiteur) {
-                    throw new UserException(
-                        "Tu n'as pas accès à ce frais"
-                    );
-                } else {
-                    $unFraisF->delete();
-                }
+            $lesFraisFNonAttribues = FraisF::whereNotIn('id_fraisforfait', function ($query) use ($id_frais) { // Requête par ChatGPT (mais ça marchait de juste lister tous les spécialités mais on risque une erreur en choisissant une spécialité que le praticien a déjà
+                $query->select('id_fraisforfait')
+                    ->from('ligne_fraisforfait')
+                    ->where('id_frais', '=', $id_frais);
+            })
+                ->orderBy('lib_fraisforfait')->orderBy('id_fraisforfait')
+                ->get();
+
+			$visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
+				->select('id_visiteur')
+				->where('id_frais', '=', $id_frais);
+			if ($visiteurDuFrais->id_visiteur =! $id_visiteur) {
+				throw new UserException(
+					"Tu n'as pas accès à ce frais au forfait"
+				);
+			} else {
+				return $lesFraisFNonAttribues;
+			}
         } catch (QueryException $exception) {
-            if ($exception->getCode() == 23000) {
-                Session::put('erreur', $exception->getMessage());
-                return redirect(url('editerFrais/'.$id));
-            } else {
-                return view('error', compact('exception'));
-            }
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
+        }
+    }
+
+	public function saveUnFraisFpourUnFrais(LigneFraisF $ligne_fraisforfait) {
+        try {
+            $ligne_fraisforfait->save();
+        } catch (QueryException $exception) {
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
         }
     }
 }

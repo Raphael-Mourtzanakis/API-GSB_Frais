@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VisiteurController;
 use App\Http\Controllers\FraisController;
 use App\Http\Controllers\FraisHFController;
+use App\Http\Controllers\FraisFController;
 use App\Http\Controllers\PraticienController;
 use App\Http\Controllers\SpecialiteController;
 
@@ -26,6 +27,12 @@ Route::get('/Frais/modifier/{id_frais}/hors-forfait/ajouter', [FraisHFController
 Route::get('/Frais/modifier/{id_frais}/hors-forfait/modifier/{id_fraisHF}', [FraisHFController::class, 'editFraisHF']);
 Route::post('/Frais/modifier/hors-forfait/valider', [FraisHFController::class, 'validFraisHF']);
 Route::get('/Frais/modifier/{id_frais}/hors-forfait/supprimer/{id_fraisHF}', [FraisHFController::class, 'removeFraisHF']);
+
+Route::get('/Frais/modifier/{id_frais}/forfait/lister', [FraisFController::class, 'listFraisF']);
+Route::post('/Frais/modifier/forfait/ajouter', [FraisFController::class, 'addFraisF']);
+Route::get('/Frais/modifier/{id_frais}/forfait/modifier/{id_fraisF}', [FraisFController::class, 'editFraisF']);
+Route::post('/Frais/modifier/forfait/valider', [FraisFController::class, 'validFraisF']);
+Route::get('/Frais/modifier/{id_frais}/forfait/supprimer/{id_fraisF}', [FraisFController::class, 'removeFraisF']);
 
 Route::get('/Praticien/rechercher', [PraticienController::class, 'searchPraticien']);
 Route::post('/Praticien/lister', [PraticienController::class, 'listPraticien']);

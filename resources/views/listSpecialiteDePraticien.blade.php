@@ -55,4 +55,7 @@
         </div>
         @endif
     </table>
+	<a href="{{ url("/Praticien/modifier/".$praticien->id_praticien) }}" class="btn btn-secondary">
+		Retour
+	</a>
 @endsection

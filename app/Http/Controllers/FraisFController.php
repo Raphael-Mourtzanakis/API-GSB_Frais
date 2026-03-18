@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\FraisF;
+use App\Models\LigneFraisF;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Services\FraisFService;
+use App\Services\LigneFraisFservice;
 
 class FraisFController extends Controller {
     public function listFraisF($id_frais) {
@@ -14,21 +16,9 @@ class FraisFController extends Controller {
             $service = new FraisFService();
             $id_visiteur = session("id_visiteur");
             $desFraisF = $service->getListFraisF($id_frais, $id_visiteur);
+			$lesFraisFNonAttribues = $service->getListFraisFNonAttribues($id_frais, $id_visiteur);
             if (isset($id_visiteur)) {
-                return view('listFraisF', compact('desFraisF', 'id_frais'));
-            } else {
-                return redirect("/");
-            }
-        } catch (Exception $exception) {
-            return view('error', compact('exception'));
-        }
-    }
-    public function addFraisF($id_frais) {
-        try {
-            $unFraisF = new FraisF();
-            $id_visiteur = session("id_visiteur");
-            if (isset($id_visiteur)) {
-                return view('formFraisF', compact('unFraisF', 'id_frais'));
+                return view('listFraisF', compact('desFraisF', 'id_frais', 'lesFraisFNonAttribues'));
             } else {
                 return redirect("/");
             }
@@ -37,24 +27,27 @@ class FraisFController extends Controller {
         }
     }
 
-    public function validFraisF(Request $request) {
+	public function addFraisF(Request $request) {
         try {
-            $id_fraisF = $request->input('id-fraisF');
-			$id_frais = $request->input('id-frais');
-            $service = new FraisFService();
-            if ($id_fraisF) {
-                $unFraisF = $service->getunFraisF($id_fraisF);
-                $unFraisF->date_fraishorsforfait = today(); // Définir la date au moment de la modification
-            } else {
-                $unFraisF = new FraisF();
-            }
-            $unFraisF->montant_fraishorsforfait = $request->input("montant");
-            $unFraisF->lib_fraishorsforfait = $request->input("libelle");
-			$unFraisF->id_frais = $id_frais;
+            $service = new LigneFraisFservice();
 
-            $service->saveUnFraisF($unFraisF);
+            $id_frais = $request->input('id_frais');
+			$id_fraisforfait = $request->input('id_fraisforfait');
 
-            return redirect("/Frais/modifier/".$id_frais."/hors-forfait/lister");
+			if ( ($request->input("quantite") !== null) && ($request->input("quantite") > 0) ) {
+				$quantite = $request->input("quantite");
+			} else {
+				$quantite = 1;
+			}
+
+            $ligne_fraisforfait = new LigneFraisF();
+            $ligne_fraisforfait->id_frais = $id_frais;
+            $ligne_fraisforfait->id_fraisforfait = $id_fraisforfait;
+			$ligne_fraisforfait->quantite_ligne = $quantite;
+
+            $service->saveUnFraisFpourUnFrais($ligne_fraisforfait);
+
+            return redirect("/Frais/modifier/".$id_frais."/forfait/lister");
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
@@ -63,12 +56,12 @@ class FraisFController extends Controller {
     public function editFraisF($id_frais, $id_fraisF) {
         try {
             $service = new FraisFService();
-            $unFraisF = $service->getunFraisF($id_fraisF);
+            $unFraisF = $service->getunFraisF($id_frais, $id_fraisF);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
 
-            return view('formFraisF', compact('unFraisF', 'id_frais', 'erreur'));
+            return view('formFraisFdeFrais', compact('unFraisF', 'id_frais', 'erreur'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
@@ -78,7 +71,7 @@ class FraisFController extends Controller {
         try {
             $id_visiteur = session("id_visiteur");
             $service = new FraisFService();
-            $service->deleteFraisF($id_fraisF, $id_visiteur);
+            $service->deleteFraisF($id_frais, $id_fraisF, $id_visiteur);
 
             return redirect("/Frais/modifier/".$id_frais."/hors-forfait/lister");
         } catch (Exception $exception) {

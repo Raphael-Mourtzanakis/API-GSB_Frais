@@ -174,7 +174,7 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
         gap: 15px;
     }
 
-.ajout-de-specialite
+.ajout-de-specialite, .ajout-de-fraisF
     {
         display: flex;
         margin-bottom: 10px;
@@ -182,31 +182,51 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
         align-items: center;
     }
 
-.ajout-de-specialite div div select, .ajout-de-specialite div button
+.ajout-de-specialite div div select, .ajout-de-specialite div button, .ajout-de-fraisF div div select, .ajout-de-fraisF div button
     {
         margin-bottom: 12px;
         gap: 15px;
     }
 
-.ajout-de-specialite div div select
+.ajout-de-specialite div div select, .ajout-de-fraisF div div select
     {
         min-width: 500px;
     }
 
-.ajout-de-specialite div
+.ajout-de-specialite div, .ajout-de-fraisF div
     {
         display: inline;
     }
 
-.ajout-de-specialite div label
+.ajout-de-specialite div label, .ajout-de-fraisF div label
     {
-        min-width: 200px;
+        min-width: 205px;
     }
 
 .ajout-de-specialite div button
     {
         margin-top: 32px;
     }
+.ajout-de-fraisF div button
+    {
+        margin-bottom: 25px;
+    }
+
+.ajout-de-fraisF div div div
+	{
+		display: inline-flex;
+		align-items: center;
+		margin-top: -10px;
+	}
+.ajout-de-fraisF div div div p
+	{
+		min-width: 125px;
+		margin-top: 8px;
+	}
+.ajout-de-fraisF div div div input
+	{
+		width: 75px;
+	}
 
 .delete-text
     {

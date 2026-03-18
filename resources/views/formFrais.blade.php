@@ -9,12 +9,6 @@
             @if ($unFrais->id_frais) <input type="hidden" name="id" class="form-control" value="{{$unFrais->id_frais}}" required> @endif
 
             <div class="form-group">
-                <label class="col-md-3">Titre</label>
-                <div class="col-md-6">
-                    <input type="text" name="titre" class="form-control" value="{{$unFrais->titre}}" maxlength="50">
-                </div>
-            </div>
-            <div class="form-group">
                 <label class="col-md-3">Année-Mois</label>
                 <div class="col-md-6">
                     <input type="month" name="annee-mois" class="form-control" value="{{$unFrais->anneemois}}" required>
@@ -26,7 +20,7 @@
                     <div class="money-group"> <input type="number" name="montant-saisi" class="form-control " min="0" step="0.01" value="{{$montantSaisi}}" disabled style="cursor: not-allowed"> € </div>
                     <div class="col-md-12 col-md-offset-3" style="margin-top: 8px; @if (!$unFrais->id_frais) cursor: not-allowed; @endif">
                         <a @if ($unFrais->id_frais) href="{{ url('Frais/modifier/'.$unFrais->id_frais.'/hors-forfait/lister') }}" @endif class="btn btn-info @if (!$unFrais->id_frais)disabled @endif">Frais hors forfait</a>
-                        <a @if ($unFrais->id_frais) href="" @endif class="btn btn-info @if (!$unFrais->id_frais)disabled @endif">Frais au forfait</a>
+                        <a @if ($unFrais->id_frais) href="{{ url('Frais/modifier/'.$unFrais->id_frais.'/forfait/lister') }}" @endif class="btn btn-info @if (!$unFrais->id_frais)disabled @endif">Frais au forfait</a>
                     </div>
                 </div>
             </div>

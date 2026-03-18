@@ -54,7 +54,6 @@ class FraisController extends Controller {
             } else {
                 $unFrais = new Frais();
             }
-            $unFrais->titre = $request->input("titre");
             $unFrais->id_etat = 2;
             $unFrais->anneemois = $request->input("annee-mois");
             $unFrais->id_visiteur = session("id_visiteur");

@@ -4,7 +4,7 @@
     <form method="POST" action="{{ url('/Frais/modifier/hors-forfait/valider') }}">
         {{ csrf_field() }}
 
-        <h1>@if ($unFraisHF->id_fraishorsforfait) Fiche @else Ajout @endif de frais</h1>
+        <h1>@if ($unFraisHF->id_fraishorsforfait) Fiche @else Ajout @endif de frais hors forfait</h1>
         <div class="col-md-12 card card-body bg-light">
             @if ($unFraisHF->id_fraishorsforfait) <input type="hidden" name="id-fraisHF" class="form-control" value="{{$unFraisHF->id_fraishorsforfait}}" required> @endif
 			<input type="hidden" name="id-frais" class="form-control" value="{{$id_frais}}" required>
@@ -34,7 +34,7 @@
                         Annuler
                     </button>
                     @if ($unFraisHF->id_fraishorsforfait)
-                        <a href="{{ url("/Frais/modifier/".$id_frais."/hors-forfait/supprimer/".$unFraisHF->id_fraishorsforfait) }}" id="suppr" class="btn btn-danger" onclick="if (confirm ('Supprimer cette fiche de frais ?'));">
+                        <a href="{{ url("/Frais/modifier/".$id_frais."/hors-forfait/supprimer/".$unFraisHF->id_fraishorsforfait) }}" id="suppr" class="btn btn-danger" onclick="if (confirm ('Supprimer ce frais hors forfait ?'));">
                             Supprimer
                         </a>
                     @endif

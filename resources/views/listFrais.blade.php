@@ -12,7 +12,6 @@
         <tr>
             <th>Date de modification</th>
             <th>Mois</th>
-            <th>Titre</th>
             <th>État</th>
             <th>Nombre de justificatifs</th>
             <th>Montant validé</th>
@@ -24,7 +23,6 @@
             <tr>
                 <td>{{ $ligne->datemodification }}</td>
                 <td>{{ $ligne->anneemois }}</td>
-                <td>{{ $ligne->titre }}</td>
                 <td>{{ $ligne->lib_etat }}</td>
                 <td>{{ $ligne->nbjustificatifs }}</td>
                 <td>{{ $ligne->montantvalide }} @if ($ligne->montantvalide ==! "") € @endif</td>
