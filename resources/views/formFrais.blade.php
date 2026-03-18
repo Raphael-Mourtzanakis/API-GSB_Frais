@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label class="col-md-3">Montant saisi</label>
                 <div class="col-md-6">
-                    <input type="number" name="montant-saisi" class="form-control " min="0" step="0.01" value="" disabled style="cursor: not-allowed">
+                    <div class="money-group"> <input type="number" name="montant-saisi" class="form-control " min="0" step="0.01" value="{{$montantSaisi}}" disabled style="cursor: not-allowed"> € </div>
                     <div class="col-md-12 col-md-offset-3" style="margin-top: 8px; @if (!$unFrais->id_frais) cursor: not-allowed; @endif">
                         <a @if ($unFrais->id_frais) href="{{ url('Frais/modifier/'.$unFrais->id_frais.'/hors-forfait/lister') }}" @endif class="btn btn-info @if (!$unFrais->id_frais)disabled @endif">Frais hors forfait</a>
                         <a @if ($unFrais->id_frais) href="" @endif class="btn btn-info @if (!$unFrais->id_frais)disabled @endif">Frais au forfait</a>
@@ -39,7 +39,7 @@
             <div class="form-group">
                 <label class="col-md-3">Montant validé</label>
                 <div class="col-md-6">
-                    <input type="number" name="montant-validé" class="form-control" min="0" step="0.01" value="{{$unFrais->montantvalide}}">
+                    <div class="money-group"> <input type="number" name="montant-validé" class="form-control" min="0" step="0.01" value="{{$unFrais->montantvalide}}"> € </div>
                 </div>
             </div>
             <div class="form-group">

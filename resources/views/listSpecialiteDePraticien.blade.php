@@ -51,7 +51,7 @@
         </tbody>
         @else
         <div class="container table-message">
-            <p>Aucune spécialité trouvée à ce praticien.</p>
+            <p>Aucune spécialité trouvée pour ce praticien.</p>
         </div>
         @endif
     </table>

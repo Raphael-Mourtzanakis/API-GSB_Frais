@@ -15,7 +15,7 @@ class FraisHFController extends Controller {
             $id_visiteur = session("id_visiteur");
             $desFraisHF = $service->getListFraisHF($id_frais,$id_visiteur);
             if (isset($id_visiteur)) {
-                return view('listFraisHF', compact('desFraisHF'));
+                return view('listFraisHF', compact('desFraisHF', 'id_frais'));
             } else {
                 return redirect("/");
             }
@@ -23,12 +23,12 @@ class FraisHFController extends Controller {
             return view('error', compact('exception'));
         }
     }
-    public function addFraisHF() {
+    public function addFraisHF($id_frais) {
         try {
             $unFraisHF = new FraisHF();
             $id_visiteur = session("id_visiteur");
             if (isset($id_visiteur)) {
-                return view('formFraisHF', compact('unFraisHF'));
+                return view('formFraisHF', compact('unFraisHF', 'id_frais'));
             } else {
                 return redirect("/");
             }
@@ -39,20 +39,22 @@ class FraisHFController extends Controller {
 
     public function validFraisHF(Request $request) {
         try {
-            $id = $request->input('id');
+            $id_fraisHF = $request->input('id-fraisHF');
+			$id_frais = $request->input('id-frais');
             $service = new FraisHFService();
-            if ($id) {
-                $unFraisHF = $service->getunFraisHF($id);
+            if ($id_fraisHF) {
+                $unFraisHF = $service->getunFraisHF($id_frais, $id_fraisHF);
                 $unFraisHF->date_fraishorsforfait = today(); // Définir la date au moment de la modification
             } else {
                 $unFraisHF = new FraisHF();
             }
             $unFraisHF->montant_fraishorsforfait = $request->input("montant");
-            $unFraisHF->lib_fraishorsforfait = session("libelle");
+            $unFraisHF->lib_fraishorsforfait = $request->input("libelle");
+			$unFraisHF->id_frais = $id_frais;
 
-            $service->saveunFraisHF($unFraisHF);
+            $service->saveUnFraisHF($unFraisHF);
 
-            return redirect("/listerFrais");
+            return redirect("/Frais/modifier/".$id_frais."/hors-forfait/lister");
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
@@ -66,19 +68,19 @@ class FraisHFController extends Controller {
             $erreur = Session::get('erreur');
             Session::remove('erreur');
 
-            return view('formFraisHF', compact('unFraisHF', 'erreur'));
+            return view('formFraisHF', compact('unFraisHF', 'id_frais', 'erreur'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
     }
 
-    public function removeFraisHF($id) {
+    public function removeFraisHF($id_frais, $id_fraisHF) {
         try {
             $id_visiteur = session("id_visiteur");
             $service = new FraisHFService();
-            $service->deleteFraisHF($id,$id_visiteur);
+            $service->deleteFraisHF($id_fraisHF, $id_visiteur);
 
-            return redirect("/listerFrais");
+            return redirect("/Frais/modifier/".$id_frais."/hors-forfait/lister");
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }

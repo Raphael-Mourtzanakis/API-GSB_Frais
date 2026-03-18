@@ -27,11 +27,15 @@ class FraisController extends Controller {
     public function addFrais() {
         try {
             $unFrais = new Frais();
-            $etats = [new Etat()];
-            $etats[0]->lib_etat = "Fiche créée, saisie en cours";
+			$service = new FraisService();
+			$listEtats = $service->getListEtat();
+			$etats = [new Etat()];
+			$etats[0]->lib_etat = $listEtats[0]->lib_etat;
             $id_visiteur = session("id_visiteur");
+			$montantSaisi = null;
+
             if (isset($id_visiteur)) {
-                return view('formFrais', compact('unFrais', 'etats'));
+                return view('formFrais', compact('unFrais', 'montantSaisi', 'etats'));
             } else {
                 return redirect("/");
             }
@@ -70,11 +74,12 @@ class FraisController extends Controller {
             $service = new FraisService();
             $etats = $service->getListEtat();
             $unFrais = $service->getUnFrais($id);
+			$montantSaisi = $service->getMontantSaisi($id);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
 
-            return view('formFrais', compact('unFrais', 'etats', 'erreur'));
+            return view('formFrais', compact('unFrais', 'etats', 'montantSaisi', 'erreur'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }

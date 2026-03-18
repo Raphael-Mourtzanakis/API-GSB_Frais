@@ -212,3 +212,16 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
     {
         color: #c30000;
     }
+
+.ajout-de-fraisHF
+	{
+		margin-bottom: 10px;
+	}
+
+.money-group
+	{
+		display: flex;
+		gap: 5px;
+		align-items: center;
+		cursor: default;
+	}

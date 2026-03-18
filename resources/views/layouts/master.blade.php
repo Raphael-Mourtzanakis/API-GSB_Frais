@@ -89,10 +89,9 @@
     </nav>
 
 </div>
-<div class="container" style="margin-top: 75px;">
+<div class="container website-page" style="margin-top: 75px; margin-bottom: 75px;">
     @yield('content')
 </div>
-
 
 </body>
 

@@ -22,7 +22,10 @@ Route::post('/Frais/valider', [FraisController::class, 'validFrais']);
 Route::get('/Frais/supprimer/{id}', [FraisController::class, 'removeFrais']);
 
 Route::get('/Frais/modifier/{id_frais}/hors-forfait/lister', [FraisHFController::class, 'listFraisHF']);
+Route::get('/Frais/modifier/{id_frais}/hors-forfait/ajouter', [FraisHFController::class, 'addFraisHF']);
 Route::get('/Frais/modifier/{id_frais}/hors-forfait/modifier/{id_fraisHF}', [FraisHFController::class, 'editFraisHF']);
+Route::post('/Frais/modifier/hors-forfait/valider', [FraisHFController::class, 'validFraisHF']);
+Route::get('/Frais/modifier/{id_frais}/hors-forfait/supprimer/{id_fraisHF}', [FraisHFController::class, 'removeFraisHF']);
 
 Route::get('/Praticien/rechercher', [PraticienController::class, 'searchPraticien']);
 Route::post('/Praticien/lister', [PraticienController::class, 'listPraticien']);

@@ -41,8 +41,7 @@ class FraisHFService
     public function getUnFraisHF($id_frais, $id_fraisHF) {
         try {
         $unFraisHF = FraisHF::query()
-            ->find($id_fraisHF)
-            ->where('id_frais', '=', $id_frais);
+            ->find($id_fraisHF);
 
         return $unFraisHF;
         } catch (QueryException $exception) {
@@ -55,7 +54,7 @@ class FraisHFService
         }
     }
 
-    public function saveUnFraisHF(Frais $unFraisHF) {
+    public function saveUnFraisHF(FraisHF $unFraisHF) {
         try {
         $unFraisHF->save();
         } catch (QueryException $exception) {

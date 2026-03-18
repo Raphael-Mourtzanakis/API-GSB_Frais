@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Frais;
+use App\Models\FraisHF;
 use App\Models\Etat;
 use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
@@ -102,6 +103,23 @@ class FraisService
                 $exception->getMessage(),
                 $exception->getCode()
             );*/
+        }
+    }
+
+	public function getMontantSaisi($id_frais) {
+        try {
+            $montantSaisi = FraisHF::query()
+			->where('id_frais', '=', $id_frais)
+			->sum('montant_fraishorsforfait');
+
+            return $montantSaisi;
+        } catch (QueryException $exception) {
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
         }
     }
 }
