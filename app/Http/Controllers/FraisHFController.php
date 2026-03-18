@@ -13,7 +13,7 @@ class FraisHFController extends Controller {
         try {
             $service = new FraisHFService();
             $id_visiteur = session("id_visiteur");
-            $desFraisHF = $service->getListFraisHF($id_frais,$id_visiteur);
+            $desFraisHF = $service->getListFraisHF($id_frais, $id_visiteur);
             if (isset($id_visiteur)) {
                 return view('listFraisHF', compact('desFraisHF', 'id_frais'));
             } else {
@@ -43,7 +43,7 @@ class FraisHFController extends Controller {
 			$id_frais = $request->input('id-frais');
             $service = new FraisHFService();
             if ($id_fraisHF) {
-                $unFraisHF = $service->getunFraisHF($id_frais, $id_fraisHF);
+                $unFraisHF = $service->getunFraisHF($id_fraisHF);
                 $unFraisHF->date_fraishorsforfait = today(); // Définir la date au moment de la modification
             } else {
                 $unFraisHF = new FraisHF();
@@ -63,7 +63,7 @@ class FraisHFController extends Controller {
     public function editFraisHF($id_frais, $id_fraisHF) {
         try {
             $service = new FraisHFService();
-            $unFraisHF = $service->getunFraisHF($id_frais, $id_fraisHF);
+            $unFraisHF = $service->getunFraisHF($id_fraisHF);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
