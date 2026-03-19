@@ -10,7 +10,69 @@ use function Symfony\Component\String\s;
 
 class FraisFservice
 {
-    public function getListFraisF($id_frais, $id_visiteur) {
+	public function getListFraisF() {
+        try {
+			$desFraisF = FraisF::query()
+				->select()
+				->orderBy('fraisforfait.lib_fraisforfait')->orderBy('fraisforfait.id_fraisforfait')
+			->get();
+
+			return $desFraisF;
+        } catch (QueryException $exception) {
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
+        }
+    }
+
+	public function getUnFraisF($id) {
+        try {
+        $unFraisF = FraisF::query()
+			->find($id);
+
+		return $unFraisF;
+        } catch (QueryException $exception) {
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
+        }
+    }
+
+	public function saveUnFraisF(FraisF $unFraisF) {
+        try {
+            $unFraisF->save();
+        } catch (QueryException $exception) {
+            $userMessage = "Erreur d'accès à la base de données";
+            throw new UserException(
+                $userMessage,
+                $exception->getMessage(),
+                $exception->getCode()
+            );
+        }
+    }
+
+    public function deleteFraisF($id) {
+        try {
+            $unFraisF = FraisF::query()
+                ->find($id);
+            $unFraisF->delete();
+        } catch (QueryException $exception) {
+            if ($exception->getCode() == 23000) {
+                Session::put('erreur', $exception->getMessage());
+                return redirect(url('/Frais_forfait/lister'));
+            } else {
+                return view('error', compact('exception'));
+            }
+        }
+    }
+
+    public function getListFraisFdunFrais($id_frais, $id_visiteur) {
         try {
         $desFraisF = FraisF::query()
             ->select('fraisforfait.*', 'ligne_fraisforfait.quantite_ligne')
@@ -83,19 +145,6 @@ class FraisFservice
 		ON ligne_fraisforfait.id_fraisforfait = fraisforfait.id_fraisforfait
 		WHERE ligne_fraisforfait.id_fraisforfait = 2
 	*/
-
-    public function saveUnFraisF(FraisF $unFraisF) {
-        try {
-        $unFraisF->save();
-        } catch (QueryException $exception) {
-            $userMessage = "Erreur d'accès à la base de données";
-            throw new UserException(
-                $userMessage,
-                $exception->getMessage(),
-                $exception->getCode()
-            );
-        }
-    }
 
 	public function getListFraisFNonAttribues($id_frais, $id_visiteur)
     {

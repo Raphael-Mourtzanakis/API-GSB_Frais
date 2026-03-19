@@ -28,11 +28,17 @@ Route::get('/Frais/modifier/{id_frais}/hors-forfait/modifier/{id_fraisHF}', [Fra
 Route::post('/Frais/modifier/hors-forfait/valider', [FraisHFController::class, 'validFraisHF']);
 Route::get('/Frais/modifier/{id_frais}/hors-forfait/supprimer/{id_fraisHF}', [FraisHFController::class, 'removeFraisHF']);
 
-Route::get('/Frais/modifier/{id_frais}/forfait/lister', [FraisFController::class, 'listFraisF']);
-Route::post('/Frais/modifier/forfait/ajouter', [FraisFController::class, 'addFraisF']);
-Route::get('/Frais/modifier/{id_frais}/forfait/modifier/{id_fraisF}', [FraisFController::class, 'editFraisF']);
-Route::post('/Frais/modifier/forfait/valider', [FraisFController::class, 'validFraisF']);
-Route::get('/Frais/modifier/{id_frais}/forfait/supprimer/{id_fraisF}', [FraisFController::class, 'removeFraisF']);
+Route::get('/Frais/modifier/{id_frais}/forfait/lister', [FraisController::class, 'listFraisF']);
+Route::post('/Frais/modifier/forfait/ajouter', [FraisController::class, 'addFraisF']);
+Route::get('/Frais/modifier/{id_frais}/forfait/modifier/{id_fraisF}', [FraisController::class, 'editFraisF']);
+Route::post('/Frais/modifier/forfait/valider', [FraisController::class, 'validFraisF']);
+Route::get('/Frais/modifier/{id_frais}/forfait/supprimer/{id_fraisF}', [FraisController::class, 'removeFraisF']);
+
+Route::get('/Frais_forfait/lister', [FraisFController::class, 'listFraisF']);
+Route::get('/Frais_forfait/ajouter', [FraisFController::class, 'addFraisF']);
+Route::get('/Frais_forfait/modifier/{id}', [FraisFController::class, 'editFraisF']);
+Route::post('/Frais_forfait/valider', [FraisFController::class, 'validFraisF']);
+Route::get('/Frais_forfait/supprimer/{id}', [FraisFController::class, 'removeFraisF']);
 
 Route::get('/Praticien/rechercher', [PraticienController::class, 'searchPraticien']);
 Route::post('/Praticien/lister', [PraticienController::class, 'listPraticien']);

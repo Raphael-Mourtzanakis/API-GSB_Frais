@@ -64,7 +64,7 @@ class SpecialiteService
         } catch (QueryException $exception) {
             if ($exception->getCode() == 23000) {
                 Session::put('erreur', $exception->getMessage());
-                return redirect(url('editerFrais/'.$id));
+                return redirect(url('Specialite/lister'));
             } else {
                 return view('error', compact('exception'));
             }

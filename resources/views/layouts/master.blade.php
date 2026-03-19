@@ -59,6 +59,18 @@
                         </ul>
                     </div>
 
+                    <div class="nav-category">
+                        <span class="nav-title">Frais au forfait</span>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/Frais_forfait/lister') }}">Lister</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/Frais_forfait/ajouter') }}">Ajouter</a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
 
                 <ul class="navbar-nav ms-auto">
