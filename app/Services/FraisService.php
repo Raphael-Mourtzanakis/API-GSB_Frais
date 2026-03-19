@@ -107,7 +107,7 @@ class FraisService
         }
     }
 
-	public function getMontantSaisi($id_frais) {
+	public function getMontantSaisi($id_frais) { // Solution trouvée par ChatGPT pour la multiplication de la somme et de la quantité
         try {
             $montantSaisiHF = FraisHF::query()
 			->where('id_frais', '=', $id_frais)
@@ -116,7 +116,8 @@ class FraisService
 			$montantSaisiF = LigneFraisF::query()
 			->where('id_frais', '=', $id_frais)
 			->join('fraisforfait', 'ligne_fraisforfait.id_fraisforfait', '=', 'fraisforfait.id_fraisforfait')
-			->sum('fraisforfait.montant_frais_forfait', '*', 'ligne_fraisforfait.quantite_ligne');
+            ->selectRaw('SUM(fraisforfait.montant_frais_forfait * ligne_fraisforfait.quantite_ligne) as total')
+            ->value('total');
 
             return $montantSaisiHF + $montantSaisiF;
         } catch (QueryException $exception) {
