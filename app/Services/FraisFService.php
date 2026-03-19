@@ -7,6 +7,7 @@ use App\Models\Frais;
 use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
 use function Symfony\Component\String\s;
+use Illuminate\Support\Facades\Session;
 
 class FraisFservice
 {
@@ -67,7 +68,7 @@ class FraisFservice
                 Session::put('erreur', $exception->getMessage());
                 return redirect(url('/Frais_forfait/lister'));
             } else {
-                return view('error', compact('exception'));
+              return view('error', compact('exception'));
             }
         }
     }

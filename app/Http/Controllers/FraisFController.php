@@ -14,8 +14,8 @@ class FraisFController extends Controller {
     public function listFraisF() {
         try {
             $service = new FraisFService();
-            $unFraisF = $service->getListFraisF();
-            return view('listFraisF', compact('unFraisF'));
+            $desFraisF = $service->getListFraisF();
+            return view('listFraisF', compact('desFraisF'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
@@ -53,18 +53,18 @@ class FraisFController extends Controller {
     public function editFraisF($id) {
         try {
             $service = new FraisFService();
-            $unFraisF = $service->getUneSpecialite($id);
+            $unFraisF = $service->getUnFraisF($id);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
 
-            return view('formSpecialite', compact('unFraisF', 'erreur'));
+            return view('formFraisF', compact('unFraisF', 'erreur'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
     }
 
-    public function removeFraiF($id) {
+    public function removeFraisF($id) {
         try {
             $service = new FraisFservice();
             $service->deleteFraisF($id);

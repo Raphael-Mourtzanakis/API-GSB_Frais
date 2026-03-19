@@ -20,7 +20,7 @@
                 <tr>
 					<td>{{ $ligne->lib_fraisforfait }}</td>
                     <td>{{ $ligne->montant_frais_forfait }} @if ($ligne->montant_frais_forfait ==! "") € @endif</td>
-					<td><a href="{{url("/Frais_forfait/modifier/".$id_fraisF)}}">Afficher</a></td>
+					<td><a href="{{url("/Frais_forfait/modifier/".$ligne->id_fraisforfait)}}">Afficher</a></td>
                 </tr>
             @endforeach
             </tbody>
@@ -31,7 +31,7 @@
             @endif
         </table>
 
-		<a href="{{ url("/Frais_forfait/lister) }}" class="btn btn-secondary">
+		<a href="{{ url("/Frais_forfait/lister") }}" class="btn btn-secondary">
 			Retour
 		</a>
 @endsection
