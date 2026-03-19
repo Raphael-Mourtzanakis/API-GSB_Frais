@@ -8,7 +8,7 @@ use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
 use function Symfony\Component\String\s;
 
-class FraisFService
+class FraisFservice
 {
     public function getListFraisF($id_frais, $id_visiteur) {
         try {
@@ -19,15 +19,16 @@ class FraisFService
             ->where('ligne_fraisforfait.id_frais', '=', $id_frais)
             ->orderBy('fraisforfait.lib_fraisforfait')->orderBy('fraisforfait.id_fraisforfait')
         ->get();
+
         $visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
             ->select('id_visiteur')
             ->where('id_frais', '=', $id_frais);
         if ($visiteurDuFrais->id_visiteur =! $id_visiteur) {
             throw new UserException(
-                "Tu n'as pas accès à ce frais hors forfait"
+                "Tu n'as pas accès à ce frais au forfait"
             );
         } else {
-            return $desFraisF;
+          return $desFraisF;
         }
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
@@ -48,16 +49,25 @@ class FraisFService
 		ORDER BY fraisforfait.lib_fraisforfait, fraisforfait.id_fraisforfait
 	*/
 
-    public function getUnFraisF($id_frais, $id_fraisF) {
+    public function getUnFraisFdunFrais($id_frais, $id_fraisF, $id_visiteur) {
         try {
         $unFraisF = FraisF::query()
 			->select('fraisforfait.*', 'ligne_fraisforfait.quantite_ligne')
             ->join('ligne_fraisforfait', 'ligne_fraisforfait.id_fraisforfait', '=', 'fraisforfait.id_fraisforfait')
             ->where('ligne_fraisforfait.id_fraisforfait', '=', $id_fraisF)
 			->where('ligne_fraisforfait.id_frais', '=', $id_frais)
-            ->get();
+		->first();
 
-        return $unFraisF;
+			$visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais au forfait n'est pas de notre compte
+				->select('id_visiteur')
+				->where('id_frais', '=', $id_frais);
+			if ($visiteurDuFrais->id_visiteur =! $id_visiteur) {
+				throw new UserException(
+					"Tu n'as pas accès à ce frais au forfait"
+				);
+			} else {
+				return $unFraisF;
+			}
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(
@@ -98,7 +108,7 @@ class FraisFService
                 ->orderBy('lib_fraisforfait')->orderBy('id_fraisforfait')
                 ->get();
 
-			$visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
+			$visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais au forfait n'est pas de notre compte
 				->select('id_visiteur')
 				->where('id_frais', '=', $id_frais);
 			if ($visiteurDuFrais->id_visiteur =! $id_visiteur) {
@@ -108,19 +118,6 @@ class FraisFService
 			} else {
 				return $lesFraisFNonAttribues;
 			}
-        } catch (QueryException $exception) {
-            $userMessage = "Erreur d'accès à la base de données";
-            throw new UserException(
-                $userMessage,
-                $exception->getMessage(),
-                $exception->getCode()
-            );
-        }
-    }
-
-	public function saveUnFraisFpourUnFrais(LigneFraisF $ligne_fraisforfait) {
-        try {
-            $ligne_fraisforfait->save();
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(

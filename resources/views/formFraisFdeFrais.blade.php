@@ -6,7 +6,7 @@
 
         <h1>Fiche de frais au forfait d'un frais</h1>
         <div class="col-md-12 card card-body bg-light">
-            <!-- <input type="hidden" name="id-fraisF" class="form-control" value="{{$unFraisF->id_fraisforfait}}" required> -->
+            <input type="hidden" name="id-fraisF" class="form-control" value="{{$unFraisF->id_fraisforfait}}" required>
 			<input type="hidden" name="id-frais" class="form-control" value="{{$id_frais}}" required>
 
             <div class="form-group">

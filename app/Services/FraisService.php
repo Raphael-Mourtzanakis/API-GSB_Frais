@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Frais;
 use App\Models\FraisHF;
+use App\Models\LigneFraisF;
 use App\Models\Etat;
 use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
@@ -108,11 +109,16 @@ class FraisService
 
 	public function getMontantSaisi($id_frais) {
         try {
-            $montantSaisi = FraisHF::query()
+            $montantSaisiHF = FraisHF::query()
 			->where('id_frais', '=', $id_frais)
 			->sum('montant_fraishorsforfait');
 
-            return $montantSaisi;
+			$montantSaisiF = LigneFraisF::query()
+			->where('id_frais', '=', $id_frais)
+			->join('fraisforfait', 'ligne_fraisforfait.id_fraisforfait', '=', 'fraisforfait.id_fraisforfait')
+			->sum('fraisforfait.montant_frais_forfait', '*', 'ligne_fraisforfait.quantite_ligne');
+
+            return $montantSaisiHF + $montantSaisiF;
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(

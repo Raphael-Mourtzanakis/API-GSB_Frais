@@ -13,7 +13,7 @@
         <div class="form-group">
             <label class="col-md-3">Ajouter un frais au forfait : </label>
             <div class="col-md-6">
-                <select class="form-select form-control" name="id_fraisforfait" required>
+                <select class="form-select form-control" name="id_fraisF" required>
                     <option value="">--- Sélectionnez un forfait ---</option>
                     @foreach ($lesFraisFNonAttribues as $unFraisF)
                         <option value="{{$unFraisF->id_fraisforfait}}">{{$unFraisF->lib_fraisforfait}}</option>

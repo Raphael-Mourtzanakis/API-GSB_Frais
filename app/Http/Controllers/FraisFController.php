@@ -7,13 +7,13 @@ use App\Models\LigneFraisF;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\Services\FraisFService;
+use App\Services\FraisFservice;
 use App\Services\LigneFraisFservice;
 
 class FraisFController extends Controller {
     public function listFraisF($id_frais) {
         try {
-            $service = new FraisFService();
+            $service = new FraisFservice();
             $id_visiteur = session("id_visiteur");
             $desFraisF = $service->getListFraisF($id_frais, $id_visiteur);
 			$lesFraisFNonAttribues = $service->getListFraisFNonAttribues($id_frais, $id_visiteur);
@@ -32,7 +32,7 @@ class FraisFController extends Controller {
             $service = new LigneFraisFservice();
 
             $id_frais = $request->input('id_frais');
-			$id_fraisforfait = $request->input('id_fraisforfait');
+			$id_fraisF = $request->input('id_fraisF');
 
 			if ( ($request->input("quantite") !== null) && ($request->input("quantite") > 0) ) {
 				$quantite = $request->input("quantite");
@@ -42,10 +42,37 @@ class FraisFController extends Controller {
 
             $ligne_fraisforfait = new LigneFraisF();
             $ligne_fraisforfait->id_frais = $id_frais;
-            $ligne_fraisforfait->id_fraisforfait = $id_fraisforfait;
+            $ligne_fraisforfait->id_fraisforfait = $id_fraisF;
 			$ligne_fraisforfait->quantite_ligne = $quantite;
 
-            $service->saveUnFraisFpourUnFrais($ligne_fraisforfait);
+            $service->ajouterUnFraisFpourUnFrais($ligne_fraisforfait);
+
+            return redirect("/Frais/modifier/".$id_frais."/forfait/lister");
+        } catch (Exception $exception) {
+            return view('error', compact('exception'));
+        }
+    }
+
+	public function validFraisF(Request $request) {
+        try {
+            $id_fraisF = $request->input('id-fraisF');
+			$id_frais = $request->input('id-frais');
+
+            $service = new LigneFraisFservice();
+			$id_visiteur = session("id_visiteur");
+
+			if ( ($request->input("quantite") !== null) && ($request->input("quantite") > 0) ) {
+				$quantite = $request->input("quantite");
+			} else {
+				$quantite = 1;
+			}
+
+			$ligne_fraisforfait = new LigneFraisF();
+            $ligne_fraisforfait->id_frais = $id_frais;
+            $ligne_fraisforfait->id_fraisforfait = $id_fraisF;
+			$ligne_fraisforfait->quantite_ligne = $quantite;
+
+            $service->modifierUnFraisFpourUnFrais($ligne_fraisforfait);
 
             return redirect("/Frais/modifier/".$id_frais."/forfait/lister");
         } catch (Exception $exception) {
@@ -55,8 +82,9 @@ class FraisFController extends Controller {
 
     public function editFraisF($id_frais, $id_fraisF) {
         try {
-            $service = new FraisFService();
-            $unFraisF = $service->getunFraisF($id_frais, $id_fraisF);
+            $service = new FraisFservice();
+			$id_visiteur = session("id_visiteur");
+            $unFraisF = $service->getUnFraisFdunFrais($id_frais, $id_fraisF, $id_visiteur);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
@@ -69,11 +97,11 @@ class FraisFController extends Controller {
 
     public function removeFraisF($id_frais, $id_fraisF) {
         try {
+            $service = new LigneFraisFservice();
             $id_visiteur = session("id_visiteur");
-            $service = new FraisFService();
             $service->deleteFraisF($id_frais, $id_fraisF, $id_visiteur);
 
-            return redirect("/Frais/modifier/".$id_frais."/hors-forfait/lister");
+            return redirect("/Frais/modifier/".$id_frais."/forfait/lister");
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }

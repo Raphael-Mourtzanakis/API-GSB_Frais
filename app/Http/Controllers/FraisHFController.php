@@ -43,7 +43,7 @@ class FraisHFController extends Controller {
 			$id_frais = $request->input('id-frais');
             $service = new FraisHFService();
             if ($id_fraisHF) {
-                $unFraisHF = $service->getunFraisHF($id_fraisHF);
+                $unFraisHF = $service->getUnFraisHF($id_fraisHF);
                 $unFraisHF->date_fraishorsforfait = today(); // Définir la date au moment de la modification
             } else {
                 $unFraisHF = new FraisHF();
