@@ -55,7 +55,13 @@
         </div>
         @endif
     </table>
-	<a href="{{ url("/Praticien/modifier/".$praticien->id_praticien) }}" class="btn btn-secondary">
-		Retour
-	</a>
+    <form method="POST" action="{{ url('/Praticien/lister') }}">
+        {{ csrf_field() }}
+        <input type="hidden" name="recherche" class="form-control" value="" required>
+        <div class="form-group">
+            <button type="submit" class="btn btn-secondary">
+                Retour
+            </button>
+        </div>
+    </form>
 @endsection

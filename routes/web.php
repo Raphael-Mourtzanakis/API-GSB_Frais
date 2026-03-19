@@ -7,6 +7,7 @@ use App\Http\Controllers\FraisHFController;
 use App\Http\Controllers\FraisFController;
 use App\Http\Controllers\PraticienController;
 use App\Http\Controllers\SpecialiteController;
+use App\Http\Controllers\PrescrireController;
 
 Route::get('/', function () {
     return view('home');
@@ -52,3 +53,7 @@ Route::get('/Specialite/ajouter', [SpecialiteController::class, 'addSpecialite']
 Route::get('/Specialite/modifier/{id}', [SpecialiteController::class, 'editSpecialite']);
 Route::post('/Specialite/valider', [SpecialiteController::class, 'validSpecialite']);
 Route::get('/Specialite/supprimer/{id}', [SpecialiteController::class, 'removeSpecialite']);
+
+Route::get('/Classement/familles_medicaments/lister', [PrescrireController::class, 'listClassementFamilleMedoc']);
+Route::get('/Classement/prescription_medicaments', [PrescrireController::class, 'formClassementPrescriptionMedoc']);
+Route::get('/Classement/prescription_medicaments/lister', [PrescrireController::class, 'listClassementPrescriptionMedoc']);
