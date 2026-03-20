@@ -72,4 +72,93 @@ class PraticienController extends Controller {
         }
     }
 
+
+
+
+
+    // Pour les APIs :
+
+    function getPraticienAPI($id) {
+        try {
+            $service = new PraticienService();
+            $praticien = $service->getUnPraticien($id);
+            return response()->json([
+                'data' => $praticien,
+            ]);
+        } catch(Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function searchPraticienAPI(Request $request) {
+        try {
+            $search = $request->json('recherche');
+
+            $service = new PraticienService();
+            $praticiens = $service->getSearchResultPraticien($search);
+            return response()->json([
+                'data' => $praticiens,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function listSpecialitesDunPraticienAPI($id_praticien) {
+        try {
+            $service = new PraticienService();
+            $specialites = $service->getListSpecialitesDuPraticien($id_praticien);
+            return response()->json([
+                'data' => $specialites,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+    function listSpecialitesNonAttribueesAunPraticienAPI($id_praticien) {
+        try {
+            $service = new PraticienService();
+            $specialites = $service->getListSpecialitesNonAttribues($id_praticien);
+            return response()->json([
+                'data' => $specialites,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+
+    function addSpecialiteAunPraticienAPI(Request $request) {
+        try {
+            $service = new PraticienService();
+
+            $id_praticien = $request->input('id_praticien');
+
+            $posseder = new Posseder();
+            $posseder->id_praticien = $id_praticien;
+            $posseder->id_specialite = $request->input('id_specialite');
+
+            $service->saveUneSpecialiteDePraticien($posseder);
+
+            return response()->json([
+                'status' => 'Spécialité ajouté au praticien'
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function removeSpecialiteAunPraticienAPI($id_praticien, $id_specialite) {
+        try {
+            $service = new PraticienService();
+
+            $service->deleteSpecialiteDePraticien($id_praticien, $id_specialite);
+            return response()->json([
+                'status' => 'Spécialité supprimée pour ce praticien',
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
 }

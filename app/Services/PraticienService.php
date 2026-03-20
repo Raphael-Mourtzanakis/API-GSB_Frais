@@ -53,7 +53,7 @@ class PraticienService
     {
         try {
             $specialites = Specialite::whereNotIn('id_specialite', function ($query) use ($id_praticien) { // Requête par ChatGPT (mais ça marchait de juste lister tous les spécialités mais on risque une erreur en choisissant une spécialité que le praticien a déjà
-                $query->select('id_specialite')
+                $query->select()
                     ->from('posseder')
                     ->where('id_praticien', '=', $id_praticien);
             })
