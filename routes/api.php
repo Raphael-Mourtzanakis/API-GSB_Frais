@@ -38,13 +38,13 @@ Route::get('/Etat/lister', [FraisController::class, 'listEtatAPI'])->middleware(
 
 // En cours ...
 Route::get('/Frais/{id_frais}/hors-forfait/obtenir/{id_fraisHF}', [FraisHFController::class, 'getFraisHF_API'])->middleware('auth:sanctum');
-Route::get('/Frais/{id_frais}/hors-forfait/lister', [FraisHFController::class, 'listFraisHF_API'])->middleware('auth:sanctum');
+Route::get('/Frais/{id_frais}/hors-forfait/lister/{idVisiteur}', [FraisHFController::class, 'listFraisHF_API'])->middleware('auth:sanctum');
 Route::post('/Frais/hors-forfait/ajouter', [FraisHFController::class, 'addFraisHF_API'])->middleware('auth:sanctum');
 Route::post('/Frais/hors-forfait/modifier', [FraisHFController::class, 'updateFraisHF_API'])->middleware('auth:sanctum');
 Route::delete('/Frais/hors-forfait/supprimer', [FraisHFController::class, 'removeFraisHF_API'])->middleware('auth:sanctum');
 
 Route::get('/Frais/{id_frais}/forfait/obtenir/{id_fraisF}', [FraisController::class, 'getFraisF_API'])->middleware('auth:sanctum');
-Route::get('/Frais/{id_frais}/forfait/lister', [FraisController::class, 'listFraisF_API'])->middleware('auth:sanctum');
+Route::get('/Frais/{id_frais}/forfait/lister/{idVisiteur}', [FraisController::class, 'listFraisF_API'])->middleware('auth:sanctum');
 Route::get('/Frais/{id_frais}/forfaits_non_attribues/lister', [FraisController::class, 'listFraisF_API'])->middleware('auth:sanctum');
 Route::post('/Frais/forfait/ajouter', [FraisController::class, 'addFraisF_API'])->middleware('auth:sanctum');
 Route::post('/Frais/forfait/modifier', [FraisController::class, 'updateFraisF_API'])->middleware('auth:sanctum');
@@ -60,7 +60,7 @@ Route::post('/Frais_forfait/modifier', [FraisFController::class, 'updateFraisF_A
 Route::delete('/Frais_forfait/supprimer', [FraisFController::class, 'removeFraisF_API'])->middleware('auth:sanctum');
 
 Route::get('/Praticien/obtenir/{id}', [PraticienController::class, 'getPraticienAPI'])->middleware('auth:sanctum');
-Route::post('/Praticien/lister', [PraticienController::class, 'listPraticienAPI'])->middleware('auth:sanctum');
+Route::get('/Praticien/lister', [PraticienController::class, 'listPraticienAPI'])->middleware('auth:sanctum');
 
 Route::get('/Praticien/{id_praticien}/specialites/lister', [PraticienController::class, 'listSpecialitesDunPraticienAPI'])->middleware('auth:sanctum');
 Route::get('/Praticien/{id_praticien}/specialites_non_attribuees/lister', [PraticienController::class, 'listSpecialitesNonAttribueesAunPraticienAPI'])->middleware('auth:sanctum');

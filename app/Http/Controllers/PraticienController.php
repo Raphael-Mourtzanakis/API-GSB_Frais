@@ -90,12 +90,10 @@ class PraticienController extends Controller {
         }
     }
 
-    function listPraticienAPI(Request $request) {
+    function listPraticienAPI() {
         try {
-            $search = $request->json('recherche');
-
             $service = new PraticienService();
-            $praticiens = $service->getSearchResultPraticien($search);
+            $praticiens = $service->getSearchResultPraticien("");
             return response()->json([
                 'data' => $praticiens,
             ]);

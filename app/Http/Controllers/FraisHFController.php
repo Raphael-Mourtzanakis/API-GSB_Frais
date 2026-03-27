@@ -85,4 +85,108 @@ class FraisHFController extends Controller {
             return view('error', compact('exception'));
         }
     }
+
+
+
+
+
+    // Pour les APIs :
+
+    function getFraisHF_API($id_fraisHF, $idVisiteur) {
+        try {
+            $service = new FraisHFService();
+            $unFraisHF = $service->getUnFraisHF($id_fraisHF, $idVisiteur);
+            return response()->json([
+                'data' => $unFraisHF,
+            ]);
+        } catch(Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function addFraisHF_API(Request $request) {
+        try {
+            $service = new FraisHFService();
+            $unFraisHF = new FraisHF();
+            $unFraisHF->id_etat = $request->json('id_etat');
+            $unFraisHF->anneemois = $request->json('anneemois');
+            $unFraisHF->id_visiteur = $request->json('id_visiteur');
+            $unFraisHF->nbjustificatifs = $request->json('nbjustificatifs');
+            $unFraisHF->datemodification = today();
+            $unFraisHF->montantvalide = $request->json('montantvalide');
+            $service->saveUnFraisHF($unFraisHF);
+
+            return response()->json([
+                'status' => 'Frais hors forfait ajouté au frais',
+                'data' => $unFraisHF,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function listFraisHF_API($id_frais, $idVisiteur) {
+        try {
+            $service = new FraisHFService();
+            $desFraisHF = $service->getListFraisHF($id_frais, $idVisiteur);
+            return response()->json([
+                'data' => $desFraisHF,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function updateFraisHF_API(Request $request) {
+        try {
+            $service = new FraisHFService();
+            $idFraisHF = $request->json('id_fraishorsforfait');
+            $idVisiteur = $request->json('id_visiteur');
+            $unFraisHF = $service->getUnFraisHF($idFraisHF, $idVisiteur);
+            $ancienFraisHF = $service->getUnFraisHF($idFraisHF, $idVisiteur);
+            $unFraisHF->id_frais = $request->json('id_frais');
+            $unFraisHF->date_fraishorsforfait = $request->json('date_fraishorsforfait');
+            $unFraisHF->montant_fraishorsforfait = $request->json('montant_fraishorsforfait');
+            $unFraisHF->lib_fraishorsforfait = $request->json('lib_fraishorsforfait');
+
+            $service->saveUnFraisHF($unFraisHF);
+
+            return response()->json([
+                'status' => 'Frais hors forfait modifié',
+                'old_data' => $ancienFraisHF,
+                'new_data' => $unFraisHF,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function removeFraisHF_API(Request $request) {
+        try {
+            $idFraisHF = $request->json('id_frais');
+            $idVisiteur = $request->json('id_visiteur');
+            $service = new FraisHFService();
+            $unFraisHF = $service->getUnFraisHF($idFraisHF, $idVisiteur);
+
+            if ($idFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur == $idVisiteur) {
+                $service->deleteFraisHF($idFraisHF, $idVisiteur);
+                return response()->json([
+                    'status' => 'Frais hors forfait supprimé',
+                    'data' => $unFraisHF,
+                ]);
+            } else {
+                if ($idFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur != $idVisiteur) {
+                    return response()->json([
+                        'error' => "Tu n'as pas accès à ce frais hors forfait",
+                    ]);
+                } else {
+                    return response()->json([
+                        'error' => 'Frais hors forfait inconnu',
+                    ]);
+                }
+            }
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
 }
