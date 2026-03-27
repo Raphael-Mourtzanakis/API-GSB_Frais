@@ -3,28 +3,28 @@
 @section('content')
 
     <div class="container">
-        <h1>Classement des familles de médicaments les plus précrits</h1>
+        <h1>Classement des 10 médicaments les plus préscrits par les médecins de la spécialité "{{$specialite->lib_specialite}}"</h1>
     </div>
 
-    @if (isset($famillesMedoc[0]["nombre_prescription"]))
+    @if (isset($medicaments[0]["nombre_prescription"]))
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
-            <th>Famille de médicament</th>
-            <th>Nombre de préscription</th>
+            <th>Nom commercial</th>
+            <th>Nombre de prescription</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($famillesMedoc as $ligne)
+        @foreach($medicaments as $ligne)
             <tr>
-                <td>{{ $ligne->lib_famille }}</td>
+                <td>{{ $ligne->nom_commercial }}</td>
                 <td>{{ $ligne->nombre_prescription }}</td>
             </tr>
         @endforeach
         </tbody>
         @else
         <div class="container table-message">
-            <p>Aucune famille de médicament trouvée ayant été déjà préscrite.</p>
+            <p>Aucun médicament trouvé ayant été préscrit par un médecin de cette spécialité.</p>
         </div>
         @endif
     </table>

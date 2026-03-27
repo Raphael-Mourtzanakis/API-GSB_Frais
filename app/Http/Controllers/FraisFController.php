@@ -74,4 +74,94 @@ class FraisFController extends Controller {
             return view('error', compact('exception'));
         }
     }
+
+
+
+
+
+    // Pour les APIs :
+
+    function getFraisF_API($id) {
+        try {
+            $service = new FraisFService();
+            $unFraisF = $service->getUnFraisF($id);
+            return response()->json([
+                'data' => $unFraisF,
+            ]);
+        } catch(Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function addFraisF_API(Request $request) {
+        try {
+            $service = new FraisFService();
+            $unFraisF = new FraisF();
+            $unFraisF->lib_fraisforfait = $request->json('lib_fraisforfait');
+            $unFraisF->montant_frais_forfait = $request->json('montant_frais_forfait');
+            $service->saveUnFraisF($unFraisF);
+
+            return response()->json([
+                'status' => 'Frais au forfait ajouté',
+                'data' => $unFraisF,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function listFraisF_API() {
+        try {
+            $service = new FraisFService();
+            $desFraisF = $service->getListFraisF();
+            return response()->json([
+                'data' => $desFraisF,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function updateFraisF_API(Request $request) {
+        try {
+            $service = new FraisFService();
+            $id = $request->json('id_fraisforfait');
+            $unFraisF = $service->getUnFraisF($id);
+            $ancienFraisF = $service->getUnFraisF($id);
+            $unFraisF->lib_fraisforfait = $request->json('lib_fraisforfait');
+            $unFraisF->montant_frais_forfait = $request->json('montant_frais_forfait');
+
+            $service->saveUnFraisF($unFraisF);
+
+            return response()->json([
+                'status' => 'Frais au forfait modifié',
+                'old_data' => $ancienFraisF,
+                'new_data' => $unFraisF,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function removeFraisF_API(Request $request) {
+        try {
+            $id = $request->json('id_fraisforfait');
+            $service = new FraisFService();
+            $unFraisF = $service->getUnFraisF($id);
+
+            if ($id && isset($unFraisF)) {
+                $service->deleteFraisF($id);
+                return response()->json([
+                    'status' => 'Frais au forfait supprimé',
+                    'data' => $unFraisF,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'Frais au forfait inconnu',
+                ]);
+            }
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
 }

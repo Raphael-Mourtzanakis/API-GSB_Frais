@@ -33,14 +33,49 @@ class PrescrireController extends Controller {
 
     public function listClassementPrescriptionMedoc(Request $request) {
         try {
-            $request->input('id_specialite');
+            $id_specialite = $request->input('id_specialite');
 
             $service = new PrescrireService();
             $medicaments = $service->classerPrescriptionsMedicamentsParSpecialite($id_specialite);
 
-            return view('listClassementPrescriptionMedoc', compact('medicaments'));
+            $service = new SpecialiteService();
+            $specialite = $service->getUneSpecialite($id_specialite);
+
+            return view('listClassementPrescriptionMedoc', compact('medicaments', 'specialite'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
+        }
+    }
+
+
+
+
+
+    // Pour les APIs :
+
+    function listClassementFamilleMedocAPI() {
+        try {
+            $service = new PrescrireService();
+            $famillesMedoc = $service->classerFamillesDeMedicaments();
+            return response()->json([
+                'data' => $famillesMedoc,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function listClassementPrescriptionMedocAPI(Request $request) {
+        try {
+            $id_specialite = $request->json('id_specialite');
+
+            $service = new PrescrireService();
+            $medicaments = $service->classerPrescriptionsMedicamentsParSpecialite($id_specialite);
+            return response()->json([
+                'data' => $medicaments,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
 }

@@ -56,4 +56,4 @@ Route::get('/Specialite/supprimer/{id}', [SpecialiteController::class, 'removeSp
 
 Route::get('/Classement/familles_medicaments/lister', [PrescrireController::class, 'listClassementFamilleMedoc']);
 Route::get('/Classement/prescription_medicaments', [PrescrireController::class, 'formClassementPrescriptionMedoc']);
-Route::get('/Classement/prescription_medicaments/lister', [PrescrireController::class, 'listClassementPrescriptionMedoc']);
+Route::post('/Classement/prescription_medicaments/lister', [PrescrireController::class, 'listClassementPrescriptionMedoc']);

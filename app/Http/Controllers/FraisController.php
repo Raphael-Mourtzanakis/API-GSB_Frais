@@ -76,8 +76,8 @@ class FraisController extends Controller {
     public function editFrais($id) {
         try {
             $service = new FraisService();
-            $etats = $service->getListEtat();
             $unFrais = $service->getUnFrais($id);
+            $etats = $service->getListEtat();
 			$montantSaisi = $service->getMontantSaisi($id);
 
             $erreur = Session::get('erreur');
@@ -251,13 +251,15 @@ class FraisController extends Controller {
     function updateFraisAPI(Request $request) {
         try {
             $service = new FraisService();
-            $unFrais = $service->getUnFrais($request->json('id_frais'));
-            $ancienFrais = $service->getUnFrais($request->json('id_frais'));
+            $id = $request->json('id_frais');
+            $unFrais = $service->getUnFrais($id);
+            $ancienFrais = $service->getUnFrais($id);
             $unFrais->id_etat = $request->json('id_etat');
             $unFrais->anneemois = $request->json('anneemois');
             $unFrais->nbjustificatifs = $request->json('nbjustificatifs');
             $unFrais->datemodification = today();
             $unFrais->montantvalide = $request->json('montantvalide');
+
             $service->saveUnFrais($unFrais);
 
             return response()->json([
@@ -298,4 +300,30 @@ class FraisController extends Controller {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+
+    function getMontantSaisiAPI($id_frais) {
+        try {
+            $service = new FraisService();
+            $montantSaisi = $service->getMontantSaisi($id_frais);
+
+            return response()->json([
+                'value' => $montantSaisi,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+    function listEtatAPI() {
+        try {
+            $service = new FraisService();
+            $etats = $service->getListEtat();
+
+            return response()->json([
+                'data' => $etats,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
 }

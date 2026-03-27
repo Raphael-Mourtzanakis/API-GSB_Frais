@@ -71,4 +71,93 @@ class SpecialiteController extends Controller {
             return view('error', compact('exception'));
         }
     }
+
+
+
+
+
+    // Pour les APIs :
+
+    function getSpecialiteAPI($id) {
+        try {
+            $service = new SpecialiteService();
+            $specialite = $service->getUneSpecialite($id);
+            return response()->json([
+                'data' => $specialite,
+            ]);
+        } catch(Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function addSpecialiteAPI(Request $request) {
+        try {
+            $service = new SpecialiteService();
+            $specialite = new Specialite();
+            $specialite->lib_specialite = $request->json('libelle');
+            $service->saveUneSpecialite($specialite);
+
+            return response()->json([
+                'status' => 'Specialité ajoutée',
+                'data' => $specialite,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function listSpecialiteAPI() {
+        try {
+            $service = new SpecialiteService();
+            $specialites = $service->getListSpecialites();
+            return response()->json([
+                'data' => $specialites,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function updateSpecialiteAPI(Request $request) {
+        try {
+            $service = new SpecialiteService();
+            $id = $request->json('id');
+
+            $specialite = $service->getUneSpecialite($id);
+            $ancienneSpecialite = $service->getUneSpecialite($id);
+            $specialite->lib_specialite = $request->json('libelle');
+
+            $service->saveUneSpecialite($specialite);
+
+            return response()->json([
+                'status' => 'Spécialité modifiée',
+                'old_data' => $ancienneSpecialite,
+                'new_data' => $specialite,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function removeSpecialiteAPI(Request $request) {
+        try {
+            $id = $request->json('id');
+            $service = new SpecialiteService();
+            $specialite = $service->getUneSpecialite($id);
+
+            if ($id && isset($specialite)) {
+                $service->deleteSpecialite($id);
+                return response()->json([
+                    'status' => 'Spécialité supprimée',
+                    'data' => $specialite,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'Spécialité inconnue',
+                ]);
+            }
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
 }

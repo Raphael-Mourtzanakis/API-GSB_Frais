@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Prescrire;
+use App\Models\Specialite;
 use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
 use Illuminate\Support\Facades\DB;
@@ -41,19 +42,27 @@ class PrescrireService
         ORDER BY nombre_prescription DESC, F.lib_famille, F.id_famille
     */
 
-    public function classerPrescriptionsMedicamentsParSpecialite() {
+    public function classerPrescriptionsMedicamentsParSpecialite($id_specialite) {
         try {
-            $famillesMedoc = Prescrire::query()
-                ->select('F.*', DB::raw('COUNT(*) AS nombre_prescription'))
-                ->join('medicament as M', 'prescrire.id_medicament', '=', 'M.id_medicament')
-                ->join('famille as F', 'F.id_famille', '=', 'M.id_famille')
-                ->groupBy('F.id_famille', 'F.lib_famille')
-                ->orderBy('nombre_prescription', 'desc')
-                ->orderBy('F.lib_famille')
-                ->orderBy('F.id_famille')
-                ->get();
+            $medicaments = Specialite::query()
+                ->select(
+                    'Med.id_medicament',
+                    'Med.nom_commercial',
+                    DB::raw('SUM(Stats.quantite) as nombre_prescription')
+                )
+                ->join('posseder as Pos', 'specialite.id_specialite', '=', 'Pos.id_specialite')
+                ->join('praticien as Pra', 'Pos.id_praticien', '=', 'Pra.id_praticien')
+                ->join('stats_prescriptions as Stats', 'Pra.id_praticien', '=', 'Stats.id_praticien')
+                ->join('medicament as Med', 'Stats.id_medicament', '=', 'Med.id_medicament')
+                ->where('specialite.id_specialite', '=', $id_specialite)
+                ->groupBy('Med.id_medicament', 'Med.nom_commercial')
+                ->orderByDesc('nombre_prescription')
+                ->orderBy('Med.nom_commercial')
+                ->orderBy('Med.id_medicament')
+                ->limit(10)
+            ->get();
 
-            return $famillesMedoc;
+            return $medicaments;
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(
@@ -65,9 +74,9 @@ class PrescrireService
     }
     /* En SQL :
         SELECT
-	Med.id_medicament,
-    Med.nom_commercial,
-    SUM(Stats.quantite) AS nombre_prescription
+	        Med.id_medicament,
+            Med.nom_commercial,
+            SUM(Stats.quantite) AS nombre_prescription
 
         FROM specialite Spe
         JOIN posseder Pos
@@ -79,17 +88,7 @@ class PrescrireService
         JOIN medicament Med
             ON Stats.id_medicament = Med.id_medicament
 
-        --FROM medicament Med
-        --JOIN stats_prescriptions Stats
-        --    ON Med.id_medicament = Stats.id_medicament
-        --JOIN praticien Pra
-        --    ON Pra.id_praticien = Stats.id_praticien
-        --JOIN posseder Pos
-        --    ON Pos.id_praticien = Pra.id_praticien
-        --JOIN specialite Spe
-        --    ON Spe.id_specialite = Pos.id_specialite
-
-        --WHERE Spe.id_specialite = 31
+        WHERE Spe.id_specialite = 47
 
         GROUP BY
         Med.id_medicament,

@@ -62,10 +62,10 @@ class FraisService
 
     public function getListEtat() {
         try {
-            $etats = Frais::query()
-                ->from('etat')
+            $etats = Etat::query()
+                ->select()
                 ->orderBy('lib_etat')
-                ->get();
+            ->get();
 
             return $etats;
         } catch (QueryException $exception) {
