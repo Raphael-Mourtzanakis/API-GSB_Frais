@@ -48,7 +48,7 @@
             @endforeach
             </tbody>
             @else
-                <div class="container table-message">
+                <div class="container table-message message-tableau-vide">
                     <p>Vous n'avez aucun frais au forfait pour ce frais.</p>
                 </div>
             @endif

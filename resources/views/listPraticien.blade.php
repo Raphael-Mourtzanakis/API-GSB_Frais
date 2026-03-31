@@ -47,7 +47,7 @@
         @endforeach
         </tbody>
         @else
-        <div class="container table-message">
+        <div class="container table-message message-tableau-vide">
             <p>Aucun praticien trouvé.</p>
         </div>
         @endif

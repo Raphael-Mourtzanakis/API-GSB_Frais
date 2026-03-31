@@ -6,7 +6,7 @@
         <h1>Liste des spécialités du praticien {{$praticien->prenom_praticien}} {{$praticien->nom_praticien}}</h1>
     </div>
 
-    <form method="POST" action="{{ url('/Praticien/specialites/ajouter') }}" class="ajout-de-specialite">
+    <form method="POST" action="{{ url('/Praticien/specialites/ajouter') }}" class="menu-deroulant-mini-formulaire">
         {{ csrf_field() }}
         <input type="hidden" name="id_praticien" class="form-control" value="{{$praticien->id_praticien}}" required>
 
@@ -50,7 +50,7 @@
         @endforeach
         </tbody>
         @else
-        <div class="container table-message">
+        <div class="container table-message message-tableau-vide">
             <p>Aucune spécialité trouvée pour ce praticien.</p>
         </div>
         @endif

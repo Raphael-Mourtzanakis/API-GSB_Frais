@@ -4,7 +4,7 @@
     <form method="POST" action="{{ url('/Classement/prescription_medicaments/lister') }}">
         {{ csrf_field() }}
 
-        <h1>Classement des médicaments les plus préscrits par les médecins d'une spécialité</h1>
+        <h1>Classement des 10 médicaments les plus préscrits par les médecins d'une spécialité</h1>
         <div class="col-md-12 card card-body bg-light">
             <div class="form-group">
                 <label class="col-md-3">Spécialité</label>

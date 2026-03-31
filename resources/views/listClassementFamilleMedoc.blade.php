@@ -23,7 +23,7 @@
         @endforeach
         </tbody>
         @else
-        <div class="container table-message">
+        <div class="container table-message message-tableau-vide">
             <p>Aucune famille de médicament trouvée ayant été déjà préscrite.</p>
         </div>
         @endif

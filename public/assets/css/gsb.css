@@ -189,7 +189,7 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
         gap: 15px;
     }
 
-.ajout-de-specialite, .ajout-de-fraisF
+.menu-deroulant-mini-formulaire, .ajout-de-fraisF
     {
         display: flex;
         margin-bottom: 10px;
@@ -197,28 +197,28 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
         align-items: center;
     }
 
-.ajout-de-specialite div div select, .ajout-de-specialite div button, .ajout-de-fraisF div div select, .ajout-de-fraisF div button
+.menu-deroulant-mini-formulaire div div select, .menu-deroulant-mini-formulaire div button, .ajout-de-fraisF div div select, .ajout-de-fraisF div button
     {
         margin-bottom: 12px;
         gap: 15px;
     }
 
-.ajout-de-specialite div div select, .ajout-de-fraisF div div select
+.menu-deroulant-mini-formulaire div div select, .ajout-de-fraisF div div select
     {
         min-width: 500px;
     }
 
-.ajout-de-specialite div, .ajout-de-fraisF div
+.menu-deroulant-mini-formulaire div, .ajout-de-fraisF div
     {
         display: inline;
     }
 
-.ajout-de-specialite div label, .ajout-de-fraisF div label
+.menu-deroulant-mini-formulaire div label, .ajout-de-fraisF div label
     {
         min-width: 205px;
     }
 
-.ajout-de-specialite div button
+.menu-deroulant-mini-formulaire div button
     {
         margin-top: 32px;
     }
@@ -260,3 +260,27 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
 		align-items: center;
 		cursor: default;
 	}
+
+.sous-titre
+    {
+        color: #868686;
+        margin-top: -10px;
+        text-align: center;
+        cursor: default;
+    }
+
+.message-tableau-vide
+    {
+        color: #b27c7c;
+        font-style: italic;
+        background-color: #ffeeee;
+        border-radius: 100px;
+        padding: 0.75rem 0 0.05rem 0;
+        transition: 0.5s ease;
+    }
+.message-tableau-vide:hover
+    {
+        background-color: #ffe4e4;
+        color: #b15656;
+        transition: 0.35s ease;
+    }

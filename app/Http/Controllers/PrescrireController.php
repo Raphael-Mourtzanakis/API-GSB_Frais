@@ -40,8 +40,9 @@ class PrescrireController extends Controller {
 
             $service = new SpecialiteService();
             $specialite = $service->getUneSpecialite($id_specialite);
+            $specialites = $service->getListSpecialites();
 
-            return view('listClassementPrescriptionMedoc', compact('medicaments', 'specialite'));
+            return view('listClassementPrescriptionMedoc', compact('medicaments', 'specialite', 'specialites'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }

@@ -23,7 +23,7 @@
         @endforeach
         </tbody>
         @else
-        <div class="container table-message">
+        <div class="container table-message message-tableau-vide">
             <p>Aucune spécialité trouvée.</p>
         </div>
         @endif
