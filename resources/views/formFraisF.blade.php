@@ -4,7 +4,7 @@
     <form method="POST" action="{{ url('/Frais_forfait/valider') }}">
         {{ csrf_field() }}
 
-        <h1>Fiche de frais au forfait</h1>
+        <h1>@if ($unFraisF->id_fraisforfait) Fiche @else Ajout @endif de frais au forfait</h1>
         <div class="col-md-12 card card-body bg-light">
             @if ($unFraisF->id_fraisforfait) <input type="hidden" name="id" class="form-control" value="{{$unFraisF->id_fraisforfait}}" required> @endif
 

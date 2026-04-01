@@ -359,14 +359,15 @@ class FraisController extends Controller {
             $ligne_fraisforfait = new LigneFraisF();
             $id_visiteur = $request->json('id_visiteur');
 
-            $ligne_fraisforfait->id_frais = $request->json('id_frais');
-            $ligne_fraisforfait->id_fraisforfait = $request->json('id_fraisforfait');
-
             if ( ($request->json("quantite_ligne") !== null) && ($request->json("quantite_ligne") > 0) ) {
                 $quantite = $request->json("quantite_ligne");
             } else {
                 $quantite = 1;
             }
+
+            $ligne_fraisforfait->id_frais = $request->json('id_frais');
+            $ligne_fraisforfait->id_fraisforfait = $request->json('id_fraisforfait');
+            $ligne_fraisforfait->quantite_ligne = $quantite;
 
             $service->ajouterUnFraisFpourUnFrais($ligne_fraisforfait, $id_visiteur);
 

@@ -30,8 +30,4 @@
                 </div>
             @endif
         </table>
-
-		<a href="{{ url("/Frais_forfait/lister") }}" class="btn btn-secondary">
-			Retour
-		</a>
 @endsection
