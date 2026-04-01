@@ -52,20 +52,21 @@ class FraisController extends Controller {
         try {
             $id = $request->input('id');
             $service = new FraisService();
+            $id_visiteur = session("id_visiteur");
             if ($id) {
-                $unFrais = $service->getUnFrais($id);
+                $unFrais = $service->getUnFrais($id,$id_visiteur);
                 $unFrais->datemodification = today(); // Définir la date au moment de la modification
 				$unFrais->id_etat = $request->input("etat");
             } else {
                 $unFrais = new Frais();
 				$unFrais->id_etat = 2;
+                $unFrais->id_visiteur = $id_visiteur;
             }
             $unFrais->anneemois = $request->input("annee-mois");
-            $unFrais->id_visiteur = session("id_visiteur");
             $unFrais->nbjustificatifs = $request->input("nb-justificatifs");
             $unFrais->montantvalide = $request->input("montant-validé");
 
-            $service->saveUnFrais($unFrais);
+            $service->saveUnFrais($unFrais,$id_visiteur);
 
             return redirect("/Frais/lister");
         } catch (Exception $exception) {
@@ -76,9 +77,11 @@ class FraisController extends Controller {
     public function editFrais($id) {
         try {
             $service = new FraisService();
-            $unFrais = $service->getUnFrais($id);
+            $id_visiteur = session("id_visiteur");
+
+            $unFrais = $service->getUnFrais($id,$id_visiteur);
             $etats = $service->getListEtat();
-			$montantSaisi = $service->getMontantSaisi($id);
+			$montantSaisi = $service->getMontantSaisi($id,$id_visiteur);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
@@ -120,6 +123,7 @@ class FraisController extends Controller {
 	public function addFraisF(Request $request) {
         try {
             $service = new LigneFraisFservice();
+            $id_visiteur = session("id_visiteur");
 
             $id_frais = $request->input('id_frais');
 			$id_fraisF = $request->input('id_fraisF');
@@ -135,7 +139,7 @@ class FraisController extends Controller {
             $ligne_fraisforfait->id_fraisforfait = $id_fraisF;
 			$ligne_fraisforfait->quantite_ligne = $quantite;
 
-            $service->ajouterUnFraisFpourUnFrais($ligne_fraisforfait);
+            $service->ajouterUnFraisFpourUnFrais($ligne_fraisforfait,$id_visiteur);
 
             return redirect("/Frais/modifier/".$id_frais."/forfait/lister");
         } catch (Exception $exception) {
@@ -162,7 +166,7 @@ class FraisController extends Controller {
             $ligne_fraisforfait->id_fraisforfait = $id_fraisF;
 			$ligne_fraisforfait->quantite_ligne = $quantite;
 
-            $service->modifierUnFraisFpourUnFrais($ligne_fraisforfait);
+            $service->modifierUnFraisFpourUnFrais($ligne_fraisforfait, $id_visiteur);
 
             return redirect("/Frais/modifier/".$id_frais."/forfait/lister");
         } catch (Exception $exception) {
@@ -189,7 +193,7 @@ class FraisController extends Controller {
         try {
             $service = new LigneFraisFservice();
             $id_visiteur = session("id_visiteur");
-            $service->deleteFraisF($id_frais, $id_fraisF, $id_visiteur);
+            $service->deleteFraisFpourUnFrais($id_frais, $id_fraisF, $id_visiteur);
 
             return redirect("/Frais/modifier/".$id_frais."/forfait/lister");
         } catch (Exception $exception) {
@@ -203,10 +207,10 @@ class FraisController extends Controller {
 
     // Pour les APIs :
 
-    function getFraisAPI($id) {
+    function getFraisAPI($id_frais, $idVisiteur) {
         try {
             $service = new FraisService();
-            $unFrais = $service->getUnFrais($id);
+            $unFrais = $service->getUnFrais($id_frais, $idVisiteur);
             return response()->json([
                 'data' => $unFrais,
             ]);
@@ -219,13 +223,14 @@ class FraisController extends Controller {
         try {
             $service = new FraisService();
             $unFrais = new Frais();
+            $id_visiteur = $request->json('id_visiteur');
             $unFrais->id_etat = $request->json('id_etat');
             $unFrais->anneemois = $request->json('anneemois');
             $unFrais->id_visiteur = $request->json('id_visiteur');
             $unFrais->nbjustificatifs = $request->json('nbjustificatifs');
             $unFrais->datemodification = today();
             $unFrais->montantvalide = $request->json('montantvalide');
-            $service->saveUnFrais($unFrais);
+            $service->saveUnFrais($unFrais, $id_visiteur);
 
             return response()->json([
                 'status' => 'Frais ajouté',
@@ -251,9 +256,10 @@ class FraisController extends Controller {
     function updateFraisAPI(Request $request) {
         try {
             $service = new FraisService();
+            $id_visiteur = $request->json('id_visiteur');
             $id = $request->json('id_frais');
-            $unFrais = $service->getUnFrais($id);
-            $ancienFrais = $service->getUnFrais($id);
+            $unFrais = $service->getUnFrais($id, $id_visiteur);
+            $ancienFrais = $service->getUnFrais($id, $id_visiteur);
             $unFrais->id_etat = $request->json('id_etat');
             $unFrais->anneemois = $request->json('anneemois');
             $unFrais->nbjustificatifs = $request->json('nbjustificatifs');
@@ -301,10 +307,10 @@ class FraisController extends Controller {
         }
     }
 
-    function getMontantSaisiAPI($id_frais) {
+    function getMontantSaisiAPI($id_frais, $idVisiteur) {
         try {
             $service = new FraisService();
-            $montantSaisi = $service->getMontantSaisi($id_frais);
+            $montantSaisi = $service->getMontantSaisi($id_frais, $idVisiteur);
 
             return response()->json([
                 'value' => $montantSaisi,
@@ -321,6 +327,133 @@ class FraisController extends Controller {
             return response()->json([
                 'data' => $etats,
             ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+
+    function getFraisF_API($id_frais, $id_fraisF, $idVisiteur) {
+        try {
+            $service = new FraisFService();
+
+            $unFraisF = $service->getUnFraisFdunFrais($id_frais, $id_fraisF, $idVisiteur);
+
+            if ($unFraisF && isset($unFraisF)) {
+                return response()->json([
+                    'data' => $unFraisF,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => "Frais au forfait inconnu pour ce frais",
+                ]);
+            }
+        } catch(Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function addFraisF_API(Request $request) {
+        try {
+            $service = new LigneFraisFService();
+            $ligne_fraisforfait = new LigneFraisF();
+            $id_visiteur = $request->json('id_visiteur');
+
+            $ligne_fraisforfait->id_frais = $request->json('id_frais');
+            $ligne_fraisforfait->id_fraisforfait = $request->json('id_fraisforfait');
+
+            if ( ($request->json("quantite_ligne") !== null) && ($request->json("quantite_ligne") > 0) ) {
+                $quantite = $request->json("quantite_ligne");
+            } else {
+                $quantite = 1;
+            }
+
+            $service->ajouterUnFraisFpourUnFrais($ligne_fraisforfait, $id_visiteur);
+
+            return response()->json([
+                'status' => 'Frais au forfait ajouté au frais',
+                'quantité' => $quantite
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function listFraisF_API($id_frais, $idVisiteur) {
+        try {
+            $service = new FraisFService();
+
+            $desFraisF = $service->getListFraisFdunFrais($id_frais, $idVisiteur);
+            return response()->json([
+                'data' => $desFraisF,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function listFraisFnonAttribuesAPI($id_frais, $idVisiteur) {
+        try {
+            $service = new FraisFService();
+
+            $desFraisF = $service->getListFraisFNonAttribues($id_frais, $idVisiteur);
+            return response()->json([
+                'data' => $desFraisF,
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function updateFraisF_API(Request $request) {
+        try {
+            $service = new LigneFraisFService();
+            $id_visiteur = $request->json('id_visiteur');
+            $id_frais = $request->json('id_frais');
+            $id_fraisF = $request->json('id_fraisforfait');
+
+            if ( ($request->json("quantite_ligne") !== null) && ($request->json("quantite_ligne") > 0) ) {
+                $quantite = $request->json("quantite_ligne");
+            } else {
+                $quantite = 1;
+            }
+
+            $ligne_fraisforfait = new LigneFraisF();
+            $ligne_fraisforfait->id_frais = $id_frais;
+            $ligne_fraisforfait->id_fraisforfait = $id_fraisF;
+            $ligne_fraisforfait->quantite_ligne = $quantite;
+
+            $service->modifierUnFraisFpourUnFrais($ligne_fraisforfait, $id_visiteur);
+
+            return response()->json([
+                'status' => 'Frais au forfait du frais modifié',
+                'new_quantité' => $quantite
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    function removeFraisF_API(Request $request) {
+        try {
+            $service = new LigneFraisFService();
+            $id_visiteur = $request->json('id_visiteur');
+            $id_frais = $request->json('id_frais');
+            $id_fraisF = $request->json('id_fraisforfait');
+
+            $fraisFService = new FraisFService();
+            $unFraisF = $fraisFService->getUnFraisFdunFrais($id_frais, $id_fraisF, $id_visiteur);
+
+            if ($unFraisF && isset($unFraisF)) {
+                $service->deleteFraisFpourUnFrais($id_frais, $id_fraisF, $id_visiteur);
+                return response()->json([
+                    'status' => 'Frais au forfait supprimé de ce frais',
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'Frais au forfait inconnu pour ce frais',
+                ]);
+            }
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }

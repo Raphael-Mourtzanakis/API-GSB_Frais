@@ -18,13 +18,13 @@ class FraisHFService
             ->where('fraishorsforfait.id_frais', '=', $id_frais)
             ->orderBy('fraishorsforfait.lib_fraishorsforfait')->orderBy('fraishorsforfait.id_fraishorsforfait')
         ->get();
-        $visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
+            $visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
             ->select('id_visiteur')
-            ->where('id_frais', '=', $id_frais);
-        if ($visiteurDuFrais->id_visiteur =! $id_visiteur) {
-            throw new UserException(
-                "Tu n'as pas accès à ce frais hors forfait"
-            );
+                ->find($id_frais);
+            if ($visiteurDuFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+                throw new UserException(
+                    "Accès refusé","Tu n'as pas accès à ces frais hors forfait"
+                );
         } else {
             return $desFraisHF;
         }
@@ -42,12 +42,13 @@ class FraisHFService
         try {
         $unFraisHF = FraisHF::query()
             ->find($id_fraisHF);
+
         $visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
-        ->select('id_visiteur')
-            ->where('id_frais', '=', $unFraisHF->id_frais);
-        if ($visiteurDuFrais->id_visiteur =! $id_visiteur) {
+            ->select('id_visiteur')
+        ->find($unFraisHF->id_frais);
+        if ($visiteurDuFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
             throw new UserException(
-                "Tu n'as pas accès à ce frais hors forfait"
+                "Accès refusé","Tu n'as pas accès à ce frais hors forfait"
             );
         } else {
             return $unFraisHF;
@@ -62,9 +63,18 @@ class FraisHFService
         }
     }
 
-    public function saveUnFraisHF(FraisHF $unFraisHF) {
+    public function saveUnFraisHF(FraisHF $unFraisHF, $id_visiteur) {
         try {
-        $unFraisHF->save();
+            $visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
+            ->select('id_visiteur')
+                ->find($unFraisHF->id_frais);
+            if ($visiteurDuFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+                throw new UserException(
+                    "Accès refusé","Tu ne peux pas ajouter de frais hors forfait à ce frais"
+                );
+            } else {
+                $unFraisHF->save();
+            }
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(
@@ -79,17 +89,19 @@ class FraisHFService
         try {
             $unFraisHF = FraisHF::query()
                 ->find($id);
-                if ($unFraisHF->id_visiteur =! $id_visiteur) {
-                    throw new UserException(
-                        "Tu n'as pas accès à ce frais"
-                    );
-                } else {
-                    $unFraisHF->delete();
-                }
+            $visiteurDuFrais = Frais::query() // Pour mettre une erreur si le frais du frais hors forfait n'est pas de notre compte
+            ->select('id_visiteur')
+                ->find($unFraisHF->id_frais);
+            if ($visiteurDuFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+                throw new UserException(
+                    "Accès refusé","Tu n'as pas accès à ce frais hors forfait"
+                );
+            } else {
+                $unFraisHF->delete();
+            }
         } catch (QueryException $exception) {
             if ($exception->getCode() == 23000) {
                 Session::put('erreur', $exception->getMessage());
-                return redirect(url('editerFrais/'.$id));
             } else {
                 return view('error', compact('exception'));
             }

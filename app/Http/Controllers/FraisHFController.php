@@ -39,11 +39,13 @@ class FraisHFController extends Controller {
 
     public function validFraisHF(Request $request) {
         try {
-            $id_fraisHF = $request->input('id-fraisHF');
-			$id_frais = $request->input('id-frais');
             $service = new FraisHFService();
+            $id_visiteur = session("id_visiteur");
+
+            $id_fraisHF = $request->input('id-fraisHF');
+            $id_frais = $request->input('id-frais');
             if ($id_fraisHF) {
-                $unFraisHF = $service->getUnFraisHF($id_fraisHF);
+                $unFraisHF = $service->getUnFraisHF($id_fraisHF, $id_visiteur);
                 $unFraisHF->date_fraishorsforfait = today(); // Définir la date au moment de la modification
             } else {
                 $unFraisHF = new FraisHF();
@@ -52,7 +54,7 @@ class FraisHFController extends Controller {
             $unFraisHF->lib_fraishorsforfait = $request->input("libelle");
 			$unFraisHF->id_frais = $id_frais;
 
-            $service->saveUnFraisHF($unFraisHF);
+            $service->saveUnFraisHF($unFraisHF, $id_visiteur);
 
             return redirect("/Frais/modifier/".$id_frais."/hors-forfait/lister");
         } catch (Exception $exception) {
@@ -63,7 +65,9 @@ class FraisHFController extends Controller {
     public function editFraisHF($id_frais, $id_fraisHF) {
         try {
             $service = new FraisHFService();
-            $unFraisHF = $service->getunFraisHF($id_fraisHF);
+            $id_visiteur = session("id_visiteur");
+
+            $unFraisHF = $service->getunFraisHF($id_fraisHF, $id_visiteur);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
@@ -110,11 +114,14 @@ class FraisHFController extends Controller {
             $unFraisHF = new FraisHF();
             $unFraisHF->id_etat = $request->json('id_etat');
             $unFraisHF->anneemois = $request->json('anneemois');
-            $unFraisHF->id_visiteur = $request->json('id_visiteur');
             $unFraisHF->nbjustificatifs = $request->json('nbjustificatifs');
             $unFraisHF->datemodification = today();
             $unFraisHF->montantvalide = $request->json('montantvalide');
-            $service->saveUnFraisHF($unFraisHF);
+
+            $unFraisHF->id_frais = $request->json('id_frais');
+            $id_visiteur = $request->json('id_visiteur');
+
+            $service->saveUnFraisHF($unFraisHF,$id_visiteur);
 
             return response()->json([
                 'status' => 'Frais hors forfait ajouté au frais',
@@ -140,16 +147,18 @@ class FraisHFController extends Controller {
     function updateFraisHF_API(Request $request) {
         try {
             $service = new FraisHFService();
+            $id_visiteur = $request->json('id_visiteur');
             $idFraisHF = $request->json('id_fraishorsforfait');
-            $idVisiteur = $request->json('id_visiteur');
-            $unFraisHF = $service->getUnFraisHF($idFraisHF, $idVisiteur);
-            $ancienFraisHF = $service->getUnFraisHF($idFraisHF, $idVisiteur);
+
+            $unFraisHF = $service->getUnFraisHF($idFraisHF, $id_visiteur);
+            $ancienFraisHF = $service->getUnFraisHF($idFraisHF, $id_visiteur);
+
             $unFraisHF->id_frais = $request->json('id_frais');
             $unFraisHF->date_fraishorsforfait = $request->json('date_fraishorsforfait');
             $unFraisHF->montant_fraishorsforfait = $request->json('montant_fraishorsforfait');
             $unFraisHF->lib_fraishorsforfait = $request->json('lib_fraishorsforfait');
 
-            $service->saveUnFraisHF($unFraisHF);
+            $service->saveUnFraisHF($unFraisHF, $id_visiteur);
 
             return response()->json([
                 'status' => 'Frais hors forfait modifié',
@@ -163,19 +172,20 @@ class FraisHFController extends Controller {
 
     function removeFraisHF_API(Request $request) {
         try {
-            $idFraisHF = $request->json('id_frais');
-            $idVisiteur = $request->json('id_visiteur');
             $service = new FraisHFService();
-            $unFraisHF = $service->getUnFraisHF($idFraisHF, $idVisiteur);
+            $idFraisHF = $request->json('id_frais');
+            $id_visiteur = $request->json('id_visiteur');
 
-            if ($idFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur == $idVisiteur) {
-                $service->deleteFraisHF($idFraisHF, $idVisiteur);
+            $unFraisHF = $service->getUnFraisHF($idFraisHF, $id_visiteur);
+
+            if ($idFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur == $id_visiteur) {
+                $service->deleteFraisHF($idFraisHF, $id_visiteur);
                 return response()->json([
                     'status' => 'Frais hors forfait supprimé',
                     'data' => $unFraisHF,
                 ]);
             } else {
-                if ($idFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur != $idVisiteur) {
+                if ($idFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur != $id_visiteur) {
                     return response()->json([
                         'error' => "Tu n'as pas accès à ce frais hors forfait",
                     ]);

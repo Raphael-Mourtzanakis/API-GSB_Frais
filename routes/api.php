@@ -25,18 +25,15 @@ Route::post('/Visiteur/authentifier', [VisiteurController::class, 'authAPI']);
 Route::post('/Visiteur/deconnecter', [VisiteurController::class, 'logoutAPI'])->middleware('auth:sanctum');
 Route::get('/Visiteur/unauthorized', [VisiteurController::class, 'unauthorizedAPI'])->name('login');
 
-Route::get('/Frais/obtenir/{id}', [FraisController::class, 'getFraisAPI'])->middleware('auth:sanctum');
+Route::get('/Frais/obtenir/{id}/{idVisiteur)', [FraisController::class, 'getFraisAPI'])->middleware('auth:sanctum');
 Route::get('/Frais/lister/{idVisiteur}', [FraisController::class, 'listFraisAPI'])->middleware('auth:sanctum');
 Route::post('/Frais/ajouter', [FraisController::class, 'addFraisAPI'])->middleware('auth:sanctum');
 Route::post('/Frais/modifier', [FraisController::class, 'updateFraisAPI'])->middleware('auth:sanctum');
 Route::delete('/Frais/supprimer', [FraisController::class, 'removeFraisAPI'])->middleware('auth:sanctum');
-Route::get('/Frais/{id_frais}/montant-saisi/obtenir', [FraisController::class, 'getMontantSaisiAPI'])->middleware('auth:sanctum');
+Route::get('/Frais/{id_frais}/montant-saisi/obtenir/{idVisiteur}', [FraisController::class, 'getMontantSaisiAPI'])->middleware('auth:sanctum');
 
 Route::get('/Etat/lister', [FraisController::class, 'listEtatAPI'])->middleware('auth:sanctum');
 
-
-
-// En cours ...
 Route::get('/Frais/hors-forfait/obtenir/{id_fraisHF}/{idVisiteur}', [FraisHFController::class, 'getFraisHF_API'])->middleware('auth:sanctum');
 Route::get('/Frais/{id_frais}/hors-forfait/lister/{idVisiteur}', [FraisHFController::class, 'listFraisHF_API'])->middleware('auth:sanctum');
 Route::post('/Frais/hors-forfait/ajouter', [FraisHFController::class, 'addFraisHF_API'])->middleware('auth:sanctum');
@@ -45,13 +42,10 @@ Route::delete('/Frais/hors-forfait/supprimer', [FraisHFController::class, 'remov
 
 Route::get('/Frais/{id_frais}/forfait/obtenir/{id_fraisF}/{idVisiteur}', [FraisController::class, 'getFraisF_API'])->middleware('auth:sanctum');
 Route::get('/Frais/{id_frais}/forfait/lister/{idVisiteur}', [FraisController::class, 'listFraisF_API'])->middleware('auth:sanctum');
-Route::get('/Frais/{id_frais}/forfaits_non_attribues/lister', [FraisController::class, 'listFraisF_API'])->middleware('auth:sanctum');
+Route::get('/Frais/{id_frais}/forfaits_non_attribues/lister/{idVisiteur}', [FraisController::class, 'listFraisFnonAttribuesAPI'])->middleware('auth:sanctum');
 Route::post('/Frais/forfait/ajouter', [FraisController::class, 'addFraisF_API'])->middleware('auth:sanctum');
 Route::post('/Frais/forfait/modifier', [FraisController::class, 'updateFraisF_API'])->middleware('auth:sanctum');
 Route::delete('/Frais/forfait/supprimer', [FraisController::class, 'removeFraisF_API'])->middleware('auth:sanctum');
-
-
-
 
 Route::get('/Frais_forfait/obtenir/{id}', [FraisFController::class, 'getFraisF_API'])->middleware('auth:sanctum');
 Route::get('/Frais_forfait/lister', [FraisFController::class, 'listFraisF_API'])->middleware('auth:sanctum');

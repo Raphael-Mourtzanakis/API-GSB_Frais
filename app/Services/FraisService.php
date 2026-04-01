@@ -31,12 +31,18 @@ class FraisService
         }
     }
 
-    public function getUnFrais($id) {
+    public function getUnFrais($id,$id_visiteur) {
         try {
         $unFrais = Frais::query()
             ->find($id);
 
-        return $unFrais;
+        if ($unFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+            throw new UserException(
+                "Accès refusé", "Tu n'as pas accès à ce frais"
+            );
+        } else {
+            return $unFrais;
+        }
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(
@@ -47,9 +53,15 @@ class FraisService
         }
     }
 
-    public function saveUnFrais(Frais $unFrais) {
+    public function saveUnFrais(Frais $unFrais, $id_visiteur) {
         try {
-        $unFrais->save();
+            if ($unFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+                throw new UserException(
+                    "Accès refusé", "Tu n'as pas accès à ce frais"
+                );
+            } else {
+                $unFrais->save();
+            }
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(
@@ -82,18 +94,18 @@ class FraisService
         try {
             $unFrais = Frais::query()
                 ->find($id);
-                //->where('id_visiteur', $id_visiteur); // Au cas où on n'est pas le visiteur du frais
-                if ($unFrais->id_visiteur =! $id_visiteur) {
-                    throw new UserException(
-                        "Tu n'as pas accès à ce frais"
-                    );
-                } else {
-                    $unFrais->delete();
-                }
+
+            if ($unFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+                throw new UserException(
+                    "Accès refusé","Tu n'as pas accès à ce frais"
+                );
+            } else {
+                $unFrais->delete();
+            }
         } catch (QueryException $exception) {
             if ($exception->getCode() == 23000) {
                 Session::put('erreur', $exception->getMessage());
-                return redirect(url('editerFrais/'.$id));
+                return redirect(url('Frais/modifier/'.$id));
                 //$userMessage = "Impossible de supprimer une fiche avec des frais saisis";
             } else {
                 return view('error', compact('exception'));
@@ -107,19 +119,28 @@ class FraisService
         }
     }
 
-	public function getMontantSaisi($id_frais) { // Solution trouvée par ChatGPT pour la multiplication de la somme et de la quantité
+	public function getMontantSaisi($id_frais, $id_visiteur) { // Solution trouvée par ChatGPT pour la multiplication de la somme et de la quantité
         try {
-            $montantSaisiHF = FraisHF::query()
-			->where('id_frais', '=', $id_frais)
-			->sum('montant_fraishorsforfait');
+            $visiteurDuFrais = Frais::query()
+                ->select('id_visiteur')
+            ->find($id_frais);
+            if ($visiteurDuFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+                throw new UserException(
+                    "Accès refusé", "Tu n'as pas accès à ce frais"
+                );
+            } else {
+                $montantSaisiHF = FraisHF::query()
+                    ->where('id_frais', '=', $id_frais)
+                    ->sum('montant_fraishorsforfait');
 
-			$montantSaisiF = LigneFraisF::query()
-			->where('id_frais', '=', $id_frais)
-			->join('fraisforfait', 'ligne_fraisforfait.id_fraisforfait', '=', 'fraisforfait.id_fraisforfait')
-            ->selectRaw('SUM(fraisforfait.montant_frais_forfait * ligne_fraisforfait.quantite_ligne) as total')
-            ->value('total');
+                $montantSaisiF = LigneFraisF::query()
+                    ->where('id_frais', '=', $id_frais)
+                    ->join('fraisforfait', 'ligne_fraisforfait.id_fraisforfait', '=', 'fraisforfait.id_fraisforfait')
+                    ->selectRaw('SUM(fraisforfait.montant_frais_forfait * ligne_fraisforfait.quantite_ligne) as total')
+                    ->value('total');
 
-            return $montantSaisiHF + $montantSaisiF;
+                return $montantSaisiHF + $montantSaisiF;
+            }
         } catch (QueryException $exception) {
             $userMessage = "Erreur d'accès à la base de données";
             throw new UserException(
