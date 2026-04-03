@@ -100,9 +100,17 @@ class FraisHFController extends Controller {
         try {
             $service = new FraisHFService();
             $unFraisHF = $service->getUnFraisHF($id_fraisHF, $idVisiteur);
-            return response()->json([
-                'data' => $unFraisHF,
-            ]);
+
+            if ($unFraisHF && isset($unFraisHF)) {
+                return response()->json([
+                    'data' => $unFraisHF,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => "Frais hors forfait inconnu",
+                ]);
+            }
+
         } catch(Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -160,11 +168,17 @@ class FraisHFController extends Controller {
 
             $service->saveUnFraisHF($unFraisHF, $id_visiteur);
 
-            return response()->json([
-                'status' => 'Frais hors forfait modifié',
-                'old_data' => $ancienFraisHF,
-                'new_data' => $unFraisHF,
+            if ($unFraisHF && isset($unFraisHF)) {
+                return response()->json([
+                    'status' => 'Frais hors forfait modifié',
+                    'old_data' => $ancienFraisHF,
+                    'new_data' => $unFraisHF,
             ]);
+            } else {
+                return response()->json([
+                    'error' => 'Frais hors forfait inconnu',
+                ]);
+            }
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -173,27 +187,21 @@ class FraisHFController extends Controller {
     function removeFraisHF_API(Request $request) {
         try {
             $service = new FraisHFService();
-            $idFraisHF = $request->json('id_frais');
+            $idFraisHF = $request->json('id_fraishorsforfait');
             $id_visiteur = $request->json('id_visiteur');
 
             $unFraisHF = $service->getUnFraisHF($idFraisHF, $id_visiteur);
 
-            if ($idFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur == $id_visiteur) {
+            if ($unFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur == $id_visiteur) {
                 $service->deleteFraisHF($idFraisHF, $id_visiteur);
                 return response()->json([
                     'status' => 'Frais hors forfait supprimé',
                     'data' => $unFraisHF,
                 ]);
             } else {
-                if ($idFraisHF && isset($unFraisHF) && $unFraisHF->id_visiteur != $id_visiteur) {
-                    return response()->json([
-                        'error' => "Tu n'as pas accès à ce frais hors forfait",
-                    ]);
-                } else {
-                    return response()->json([
-                        'error' => 'Frais hors forfait inconnu',
-                    ]);
-                }
+                return response()->json([
+                    'error' => 'Frais hors forfait inconnu',
+                ]);
             }
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);

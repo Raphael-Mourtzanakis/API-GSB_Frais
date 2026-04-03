@@ -85,9 +85,16 @@ class FraisFController extends Controller {
         try {
             $service = new FraisFService();
             $unFraisF = $service->getUnFraisF($id);
-            return response()->json([
-                'data' => $unFraisF,
-            ]);
+
+            if ($unFraisF && isset($unFraisF)) {
+                return response()->json([
+                    'data' => $unFraisF,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => "Frais au forfait inconnu",
+                ]);
+            }
         } catch(Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -131,13 +138,19 @@ class FraisFController extends Controller {
             $unFraisF->lib_fraisforfait = $request->json('lib_fraisforfait');
             $unFraisF->montant_frais_forfait = $request->json('montant_frais_forfait');
 
-            $service->saveUnFraisF($unFraisF);
+            if ($unFraisF && isset($unFraisF)) {
+                $service->saveUnFraisF($unFraisF);
 
-            return response()->json([
-                'status' => 'Frais au forfait modifié',
-                'old_data' => $ancienFraisF,
-                'new_data' => $unFraisF,
-            ]);
+                return response()->json([
+                    'status' => 'Frais au forfait modifié',
+                    'old_data' => $ancienFraisF,
+                    'new_data' => $unFraisF,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => "Frais au forfait inconnu",
+                ]);
+            }
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }

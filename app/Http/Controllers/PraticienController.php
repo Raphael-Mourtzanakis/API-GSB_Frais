@@ -82,9 +82,16 @@ class PraticienController extends Controller {
         try {
             $service = new PraticienService();
             $praticien = $service->getUnPraticien($id);
-            return response()->json([
-                'data' => $praticien,
-            ]);
+
+            if ($praticien && isset($praticien)) {
+                return response()->json([
+                    'data' => $praticien,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => "Praticien inconnu",
+                ]);
+            }
         } catch(Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -105,10 +112,20 @@ class PraticienController extends Controller {
     function listSpecialitesDunPraticienAPI($id_praticien) {
         try {
             $service = new PraticienService();
-            $specialites = $service->getListSpecialitesDuPraticien($id_praticien);
-            return response()->json([
-                'data' => $specialites,
-            ]);
+            $praticien = $service->getUnPraticien($id_praticien);
+
+            if ($praticien && isset($praticien)) {
+                $specialites = $service->getListSpecialitesDuPraticien($id_praticien);
+
+                return response()->json([
+                    'data' => $specialites,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => "Praticien inconnu",
+                ]);
+            }
+
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -116,10 +133,19 @@ class PraticienController extends Controller {
     function listSpecialitesNonAttribueesAunPraticienAPI($id_praticien) {
         try {
             $service = new PraticienService();
-            $specialites = $service->getListSpecialitesNonAttribues($id_praticien);
-            return response()->json([
-                'data' => $specialites,
+            $praticien = $service->getUnPraticien($id_praticien);
+
+            if ($praticien && isset($praticien)) {
+                $specialites = $service->getListSpecialitesNonAttribues($id_praticien);
+
+                return response()->json([
+                    'data' => $specialites,
             ]);
+            } else {
+                return response()->json([
+                    'error' => "Praticien inconnu",
+                ]);
+            }
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -129,18 +155,40 @@ class PraticienController extends Controller {
     function addSpecialiteAunPraticienAPI(Request $request) {
         try {
             $service = new PraticienService();
-
             $id_praticien = $request->input('id_praticien');
+            $id_specialite = $request->input('id_specialite');
 
-            $posseder = new Posseder();
-            $posseder->id_praticien = $id_praticien;
-            $posseder->id_specialite = $request->input('id_specialite');
+            $praticien = $service->getUnPraticien($id_praticien);
 
-            $service->saveUneSpecialiteDePraticien($posseder);
+            $specialiteService = new SpecialiteService();
+            $specialite = $specialiteService->getUneSpecialite($id_specialite);
 
-            return response()->json([
-                'status' => 'Spécialité ajouté au praticien'
-            ]);
+            if ($praticien && isset($praticien) && $specialite && isset($specialite)) {
+                $posseder = new Posseder();
+                $posseder->id_praticien = $id_praticien;
+                $posseder->id_specialite = $id_specialite;
+
+                $service->saveUneSpecialiteDePraticien($posseder);
+
+                return response()->json([
+                    'status' => 'Spécialité ajoutée au praticien',
+                    'praticien_data' => $praticien,
+                    'specialité_data' => $specialite
+                ]);
+            } else if ($specialite && isset($specialite)) {
+                return response()->json([
+                    'status' => 'Praticien inconnu'
+                ]);
+            } else if ($praticien && isset($praticien)) {
+                return response()->json([
+                    'status' => 'Spécialité inconnue'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'Praticien et spécialité inconnus'
+                ]);
+            }
+
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -150,10 +198,32 @@ class PraticienController extends Controller {
         try {
             $service = new PraticienService();
 
-            $service->deleteSpecialiteDePraticien($id_praticien, $id_specialite);
-            return response()->json([
-                'status' => 'Spécialité supprimée pour ce praticien',
-            ]);
+            $praticien = $service->getUnPraticien($id_praticien);
+
+            $specialiteService = new SpecialiteService();
+            $specialite = $specialiteService->getUneSpecialite($id_specialite);
+
+            if ($praticien && isset($praticien) && $specialite && isset($specialite)) {
+                $service->deleteSpecialiteDePraticien($id_praticien, $id_specialite);
+
+                return response()->json([
+                    'status' => 'Spécialité supprimée pour ce praticien',
+                    'praticien_data' => $praticien,
+                    'specialité_data' => $specialite
+                ]);
+            } else if ($specialite && isset($specialite)) {
+                return response()->json([
+                    'status' => 'Praticien inconnu'
+                ]);
+            } else if ($praticien && isset($praticien)) {
+                return response()->json([
+                    'status' => 'Spécialité inconnue'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'Praticien et spécialité inconnus'
+                ]);
+            }
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
