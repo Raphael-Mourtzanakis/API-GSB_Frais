@@ -53,9 +53,7 @@
                         @if ($unFrais->id_frais) Modifier @else Valider @endif
                     </button>
                     <button type="button" class="btn btn-secondary"
-                            @if ($unFrais->id_frais) onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/Frais/lister') }}';">
-                            @else onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/') }}';">
-                            @endif
+                            onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/Frais/lister') }}';">
                         Annuler
                     </button>
                     @if ($unFrais->id_frais)

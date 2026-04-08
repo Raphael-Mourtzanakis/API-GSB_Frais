@@ -6,6 +6,10 @@
         <h1>Liste des frais au forfait</h1>
     </div>
 
+	<a href="{{ url("/Frais_forfait/ajouter") }}" class="btn btn-primary bouton-ajout">
+        Ajouter un frais au forfait
+    </a>
+
     @if (isset($desFraisF[0]["id_fraisforfait"]))
         <table class="table table-bordered table-striped">
             <thead>

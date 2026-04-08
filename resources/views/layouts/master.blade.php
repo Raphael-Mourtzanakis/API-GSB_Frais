@@ -27,46 +27,19 @@
                 <div class="nav-item_group">
 
                     <div class="nav-category">
-                        <span class="nav-title">Frais</span>
+						<span class="nav-title">Gestion</span>
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/Frais/lister') }}">Lister</a>
+                                <a class="nav-link" href="{{ url('/Frais/lister') }}">Frais</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/Frais/ajouter') }}">Ajouter</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="nav-category">
-                        <span class="nav-title">Praticien</span>
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/Praticien/rechercher') }}">Rechercher</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="nav-category">
-                        <span class="nav-title">Spécialité</span>
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/Specialite/lister') }}">Lister</a>
+                                <a class="nav-link" href="{{ url('/Praticien/rechercher') }}">Praticien</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/Specialite/ajouter') }}">Ajouter</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="nav-category">
-                        <span class="nav-title">Frais au forfait</span>
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/Frais_forfait/lister') }}">Lister</a>
+                                <a class="nav-link" href="{{ url('/Specialite/lister') }}">Spécialité</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/Frais_forfait/ajouter') }}">Ajouter</a>
+                                <a class="nav-link" href="{{ url('/Frais_forfait/lister') }}">Frais au forfait</a>
                             </li>
                         </ul>
                     </div>
@@ -86,7 +59,7 @@
                 </div>
 
                 <ul class="navbar-nav ms-auto">
-                    <b class="nav-text">{{session('visiteur')}}</b>
+                    <b id="user-name" class="nav-text">{{session('visiteur')}}</b>
                     <span class="nav-sepration"></span>
                     <li class="nav-item logout-button">
                         <a class="nav-link" style="cursor: pointer;"

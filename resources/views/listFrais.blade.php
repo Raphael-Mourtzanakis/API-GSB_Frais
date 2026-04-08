@@ -6,6 +6,10 @@
         <h1>Liste de vos frais</h1>
     </div>
 
+	<a href="{{ url("/Frais/ajouter") }}" class="btn btn-primary bouton-ajout">
+        Ajouter un frais
+    </a>
+
     @if (isset($desFrais[0]["id_frais"]))
     <table class="table table-bordered table-striped">
         <thead>

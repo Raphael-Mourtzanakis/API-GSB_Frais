@@ -6,7 +6,7 @@
         <h1>Liste de vos frais hors forfait</h1>
     </div>
 
-	<a href="{{ url("/Frais/modifier/".$id_frais."/hors-forfait/ajouter") }}" class="btn btn-primary ajout-de-fraisHF">
+	<a href="{{ url("/Frais/modifier/".$id_frais."/hors-forfait/ajouter") }}" class="btn btn-primary bouton-ajout">
         Ajouter un frais hors forfait
     </a>
 

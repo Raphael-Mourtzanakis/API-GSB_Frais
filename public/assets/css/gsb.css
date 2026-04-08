@@ -248,7 +248,7 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
         color: #c30000;
     }
 
-.ajout-de-fraisHF
+.bouton-ajout
 	{
 		margin-bottom: 10px;
 	}
@@ -284,3 +284,16 @@ select, option, ::-webkit-inner-spin-button, input[type="month"]
         color: #b15656;
         transition: 0.35s ease;
     }
+
+#user-name
+	{
+		font-weight: 600;
+		color: #242424;
+		cursor: default;
+		transition: 0.35s ease;
+	}
+#user-name:hover
+	{
+		color: #686868;
+		transition: 0.25s ease;
+	}

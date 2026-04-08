@@ -6,6 +6,10 @@
         <h1>Liste des spécialités</h1>
     </div>
 
+	<a href="{{ url("/Specialite/ajouter") }}" class="btn btn-primary bouton-ajout">
+        Ajouter une spécialité
+    </a>
+
     @if (isset($specialites[0]["id_specialite"]))
     <table class="table table-bordered table-striped">
         <thead>

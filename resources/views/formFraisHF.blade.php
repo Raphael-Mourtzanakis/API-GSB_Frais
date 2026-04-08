@@ -28,9 +28,7 @@
                         @if ($unFraisHF->id_fraishorsforfait) Modifier @else Valider @endif
                     </button>
                     <button type="button" class="btn btn-secondary"
-                            @if ($unFraisHF->id_fraishorsforfait) onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url("/Frais/modifier/".$id_frais."/hors-forfait/lister") }}';">
-                            @else onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/') }}';">
-                            @endif
+                            onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url("/Frais/modifier/".$id_frais."/hors-forfait/lister") }}';">
                         Annuler
                     </button>
                     @if ($unFraisHF->id_fraishorsforfait)

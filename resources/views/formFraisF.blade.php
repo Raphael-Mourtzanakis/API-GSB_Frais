@@ -27,9 +27,7 @@
                         @if ($unFraisF->id_fraisforfait) Modifier @else Valider @endif
                     </button>
                     <button type="button" class="btn btn-secondary"
-                            @if ($unFraisF->id_fraisforfait) onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url("/Frais_forfait/lister") }}';">
-                            @else onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/') }}';">
-                            @endif
+                            onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url("/Frais_forfait/lister") }}';">
                         Annuler
                     </button>
                     @if ($unFraisF->id_fraisforfait)

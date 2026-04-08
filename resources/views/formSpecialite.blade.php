@@ -21,9 +21,7 @@
                         @if ($specialite->id_specialite) Modifier @else Valider @endif
                     </button>
                     <button type="button" class="btn btn-secondary"
-                            @if ($specialite->id_specialite) onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/Specialite/lister') }}';">
-                            @else onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/') }}';">
-                            @endif
+                            onclick="if (confirm ('Annuler la saisie ?')) window.location='{{ url('/Specialite/lister') }}';">
                         Annuler
                     </button>
                     @if ($specialite->id_specialite)
