@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Specialite;
 use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
+use Illuminate\Support\Facades\Session;
 
 class SpecialiteService
 {
@@ -58,9 +59,9 @@ class SpecialiteService
 
     public function deleteSpecialite($id) {
         try {
-            $unFrais = Specialite::query()
+            $specialite = Specialite::query()
                 ->find($id);
-            $unFrais->delete();
+            $specialite->delete();
         } catch (QueryException $exception) {
             if ($exception->getCode() == 23000) {
                 Session::put('erreur', $exception->getMessage());

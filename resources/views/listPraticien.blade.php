@@ -6,10 +6,6 @@
         <h1>Liste des praticiens</h1>
     </div>
 
-	<a href="{{ url("/Praticien/ajouter") }}" class="btn btn-primary bouton-ajout">
-        Ajouter un praticien
-    </a>
-
     <form method="POST" action="{{ url('/Praticien/lister') }}" class="resultat-recherche">
         {{ csrf_field() }}
         <p>Recherche : </p>
