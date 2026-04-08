@@ -8,6 +8,7 @@ use App\Models\LigneFraisF;
 use App\Models\Etat;
 use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
+use Illuminate\Support\Facades\Session;
 
 class FraisService
 {
@@ -148,6 +149,58 @@ class FraisService
                 $exception->getMessage(),
                 $exception->getCode()
             );
+        }
+    }
+
+	public function removeTousLesFraisHF($id, $id_visiteur) {
+        try {
+			$visiteurDuFrais = Frais::query()
+				->select('id_visiteur')
+            ->find($id);
+
+			if ($visiteurDuFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+				throw new UserException(
+					"Accès refusé", "Tu n'as pas accès à ce frais"
+				);
+			} else {
+				$desFraisHF = FraisHF::query()
+                	->select()
+                	->where('id_frais', '=', $id);
+            	$desFraisHF->delete();
+			}
+        } catch (QueryException $exception) {
+            if ($exception->getCode() == 23000) {
+                Session::put('erreur', $exception->getMessage());
+                return redirect(url('Specialite/lister'));
+            } else {
+                return view('error', compact('exception'));
+            }
+        }
+    }
+
+	public function removeTousLesFraisFduFrais($id, $id_visiteur) {
+        try {
+            $visiteurDuFrais = Frais::query()
+				->select('id_visiteur')
+            ->find($id);
+
+			if ($visiteurDuFrais->id_visiteur != $id_visiteur) { // Ne pas mettre !== ou === pour vérifier ces 2 valeurs, mais != ou == (là != du coup)
+				throw new UserException(
+					"Accès refusé", "Tu n'as pas accès à ce frais"
+				);
+			} else {
+				$desFraisF = LigneFraisF::query()
+                	->select()
+                	->where('id_frais', '=', $id);
+            	$desFraisF->delete();
+			}
+        } catch (QueryException $exception) {
+            if ($exception->getCode() == 23000) {
+                Session::put('erreur', $exception->getMessage());
+                return redirect(url('Specialite/lister'));
+            } else {
+                return view('error', compact('exception'));
+            }
         }
     }
 }

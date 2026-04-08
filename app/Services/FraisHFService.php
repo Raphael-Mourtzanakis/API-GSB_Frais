@@ -7,6 +7,7 @@ use App\Models\Frais;
 use Illuminate\Database\QueryException;
 use App\Exceptions\UserException;
 use function Symfony\Component\String\s;
+use Illuminate\Support\Facades\Session;
 
 class FraisHFService
 {

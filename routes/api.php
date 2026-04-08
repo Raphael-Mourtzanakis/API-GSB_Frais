@@ -66,6 +66,7 @@ Route::get('/Specialite/lister', [SpecialiteController::class, 'listSpecialiteAP
 Route::post('/Specialite/ajouter', [SpecialiteController::class, 'addSpecialiteAPI'])->middleware('auth:sanctum');
 Route::post('/Specialite/modifier', [SpecialiteController::class, 'updateSpecialiteAPI'])->middleware('auth:sanctum');
 Route::delete('/Specialite/supprimer', [SpecialiteController::class, 'removeSpecialiteAPI'])->middleware('auth:sanctum');
+Route::get('/Specialite/nombre_possessions/obtenir/{id}', [SpecialiteController::class, 'getNombreDeFoisQueLaSpecialiteEstPossedeeAPI'])->middleware('auth:sanctum');
 
 Route::get('/Classement/familles_medicaments/lister', [PrescrireController::class, 'listClassementFamilleMedocAPI'])->middleware('auth:sanctum');
 Route::post('/Classement/prescription_medicaments/lister', [PrescrireController::class, 'listClassementPrescriptionMedocAPI'])->middleware('auth:sanctum');

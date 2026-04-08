@@ -22,7 +22,8 @@ class SpecialiteController extends Controller {
     public function addSpecialite() {
         try {
             $specialite = new Specialite();
-            return view('formSpecialite', compact('specialite'));
+			$estPossedee = false;
+            return view('formSpecialite', compact('specialite', 'estPossedee'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
@@ -51,11 +52,12 @@ class SpecialiteController extends Controller {
         try {
             $service = new SpecialiteService();
             $specialite = $service->getUneSpecialite($id);
+			$estPossedee = $service->getNombreDeFoisQueLaSpecialiteEstPossedee($id);
 
             $erreur = Session::get('erreur');
             Session::remove('erreur');
 
-            return view('formSpecialite', compact('specialite', 'erreur'));
+            return view('formSpecialite', compact('specialite', 'estPossedee', 'erreur'));
         } catch (Exception $exception) {
             return view('error', compact('exception'));
         }
@@ -64,6 +66,7 @@ class SpecialiteController extends Controller {
     public function removeSpecialite($id) {
         try {
             $service = new SpecialiteService();
+			$service->removeSpecialiteDeTousLesPraticiens($id);
             $service->deleteSpecialite($id);
 
             return redirect("/Specialite/lister");
@@ -82,9 +85,17 @@ class SpecialiteController extends Controller {
         try {
             $service = new SpecialiteService();
             $specialite = $service->getUneSpecialite($id);
-            return response()->json([
-                'data' => $specialite,
-            ]);
+
+			if ($specialite && isset($specialite)) {
+				return response()->json([
+                	'data' => $specialite,
+            	]);
+			} else {
+				return response()->json([
+                	'error' => "Spécialité inconnue",
+            	]);
+			}
+            
         } catch(Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -129,11 +140,18 @@ class SpecialiteController extends Controller {
 
             $service->saveUneSpecialite($specialite);
 
-            return response()->json([
-                'status' => 'Spécialité modifiée',
-                'old_data' => $ancienneSpecialite,
-                'new_data' => $specialite,
-            ]);
+			if ($specialite && isset($specialite)) {
+				return response()->json([
+					'status' => 'Spécialité modifiée',
+					'old_data' => $ancienneSpecialite,
+					'new_data' => $specialite,
+            	]);
+			} else {
+				return response()->json([
+					'error' => 'Spécialité inconnue'
+            	]);
+			}
+            
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -145,11 +163,31 @@ class SpecialiteController extends Controller {
             $service = new SpecialiteService();
             $specialite = $service->getUneSpecialite($id);
 
-            if ($id && isset($specialite)) {
+            if ($specialite && isset($specialite)) {
                 $service->deleteSpecialite($id);
                 return response()->json([
                     'status' => 'Spécialité supprimée',
                     'data' => $specialite,
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'Spécialité inconnue',
+                ]);
+            }
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+	function getNombreDeFoisQueLaSpecialiteEstPossedeeAPI($id) {
+        try {
+            $service = new SpecialiteService();
+            $specialite = $service->getUneSpecialite($id);
+
+            if ($specialite && isset($specialite)) {
+                $estPossedee = $service->getNombreDeFoisQueLaSpecialiteEstPossedee($id);
+                return response()->json([
+                    'nombre' => $estPossedee
                 ]);
             } else {
                 return response()->json([

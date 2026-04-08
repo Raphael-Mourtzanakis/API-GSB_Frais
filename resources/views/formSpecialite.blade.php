@@ -25,7 +25,7 @@
                         Annuler
                     </button>
                     @if ($specialite->id_specialite)
-                        <a href="{{ url("/Specialite/supprimer/".$specialite->id_specialite) }}" id="suppr" class="btn btn-danger" onclick="if (confirm ('Supprimer cette spécialité ?'));">
+                        <a href="{{ url("/Specialite/supprimer/".$specialite->id_specialite) }}" id="suppr" class="btn btn-danger" onclick="if (confirm (@if ($estPossedee < 1) 'Supprimer cette spécialité ?' @else 'Supprimer cette spécialité ?\n/!\\ Attention, {{$estPossedee}} praticien(s) possède(nt) cette spécialité /!\\.' @endif ));">
                             Supprimer
                         </a>
                     @endif

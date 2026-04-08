@@ -96,7 +96,10 @@ class FraisController extends Controller {
         try {
             $id_visiteur = session("id_visiteur");
             $service = new FraisService();
-            $service->deleteFrais($id,$id_visiteur);
+
+			$service->removeTousLesFraisHF($id, $id_visiteur);
+			$service->removeTousLesFraisFduFrais($id, $id_visiteur);
+            $service->deleteFrais($id, $id_visiteur);
 
             return redirect("/Frais/lister");
         } catch (Exception $exception) {
@@ -286,6 +289,8 @@ class FraisController extends Controller {
             $unFrais = $service->getUnFrais($id);
 
             if ($id && isset($unFrais) && $unFrais->id_visiteur == $idVisiteur) {
+				$service->removeTousLesFraisHF($id, $idVisiteur);
+				$service->removeTousLesFraisFduFrais($id, $idVisiteur);
                 $service->deleteFrais($id, $idVisiteur);
                 return response()->json([
                     'status' => 'Frais supprimé',
