@@ -227,7 +227,7 @@ class FraisController extends Controller {
             $service = new FraisService();
             $unFrais = new Frais();
             $id_visiteur = $request->json('id_visiteur');
-            $unFrais->id_etat = $request->json('id_etat');
+            $unFrais->id_etat = 2;
             $unFrais->anneemois = $request->json('anneemois');
             $unFrais->id_visiteur = $request->json('id_visiteur');
             $unFrais->nbjustificatifs = $request->json('nbjustificatifs');
