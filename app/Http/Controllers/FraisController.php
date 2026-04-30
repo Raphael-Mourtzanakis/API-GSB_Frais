@@ -288,7 +288,7 @@ class FraisController extends Controller {
             $service = new FraisService();
             $unFrais = $service->getUnFrais($id, $idVisiteur);
 
-            if ($id && isset($unFrais) && $unFrais->id_visiteur == $idVisiteur) {
+            if ($id && $unFrais) {
 				$service->removeTousLesFraisHF($id, $idVisiteur);
 				$service->removeTousLesFraisFduFrais($id, $idVisiteur);
                 $service->deleteFrais($id, $idVisiteur);
@@ -297,15 +297,9 @@ class FraisController extends Controller {
                     'data' => $unFrais,
                 ]);
             } else {
-                if ($id && isset($unFrais) && $unFrais->id_visiteur != $idVisiteur) {
-                    return response()->json([
-                        'error' => "Tu n'as pas accès à ce frais",
-                    ]);
-                } else {
-                    return response()->json([
-                        'error' => 'Frais inconnu',
-                    ]);
-                }
+                return response()->json([
+                    'error' => 'Frais inconnu',
+                ]);
             }
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
