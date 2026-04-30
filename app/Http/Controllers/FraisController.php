@@ -269,7 +269,7 @@ class FraisController extends Controller {
             $unFrais->datemodification = today();
             $unFrais->montantvalide = $request->json('montantvalide');
 
-            $service->saveUnFrais($unFrais);
+            $service->saveUnFrais($unFrais, $id_visiteur);
 
             return response()->json([
                 'status' => 'Frais modifié',
@@ -286,7 +286,7 @@ class FraisController extends Controller {
             $id = $request->json('id_frais');
             $idVisiteur = $request->json('id_visiteur');
             $service = new FraisService();
-            $unFrais = $service->getUnFrais($id);
+            $unFrais = $service->getUnFrais($id, $idVisiteur);
 
             if ($id && isset($unFrais) && $unFrais->id_visiteur == $idVisiteur) {
 				$service->removeTousLesFraisHF($id, $idVisiteur);
@@ -318,7 +318,7 @@ class FraisController extends Controller {
             $montantSaisi = $service->getMontantSaisi($id_frais, $idVisiteur);
 
             $fraisService = new FraisService();
-            $unFrais = $fraisService->getUnFrais($id_frais, $id_visiteur);
+            $unFrais = $fraisService->getUnFrais($id_frais, $idVisiteur);
 
             if ($unFrais && isset($unFrais)) {
                 return response()->json([
