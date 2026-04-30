@@ -7,7 +7,7 @@ use App\Models\LigneFraisF;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\Services\FraisFservice;
+use App\Services\FraisFService;
 use App\Services\LigneFraisFservice;
 
 class FraisFController extends Controller {
