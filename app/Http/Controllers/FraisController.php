@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Services\FraisService;
-use App\Services\FraisFservice;
+use App\Services\FraisFService;
 use App\Services\LigneFraisFService;
 
 class FraisController extends Controller {
@@ -109,7 +109,7 @@ class FraisController extends Controller {
 
 	public function listFraisF($id_frais) {
         try {
-            $service = new FraisFservice();
+            $service = new FraisFService();
             $id_visiteur = session("id_visiteur");
             $desFraisF = $service->getListFraisFdunFrais($id_frais, $id_visiteur);
 			$lesFraisFNonAttribues = $service->getListFraisFNonAttribues($id_frais, $id_visiteur);
@@ -125,7 +125,7 @@ class FraisController extends Controller {
 
 	public function addFraisF(Request $request) {
         try {
-            $service = new LigneFraisFservice();
+            $service = new LigneFraisFService();
             $id_visiteur = session("id_visiteur");
 
             $id_frais = $request->input('id_frais');
@@ -155,7 +155,7 @@ class FraisController extends Controller {
             $id_fraisF = $request->input('id-fraisF');
 			$id_frais = $request->input('id-frais');
 
-            $service = new LigneFraisFservice();
+            $service = new LigneFraisFService();
 			$id_visiteur = session("id_visiteur");
 
 			if ( ($request->input("quantite") !== null) && ($request->input("quantite") > 0) ) {
@@ -179,7 +179,7 @@ class FraisController extends Controller {
 
     public function editFraisF($id_frais, $id_fraisF) {
         try {
-            $service = new FraisFservice();
+            $service = new FraisFService();
 			$id_visiteur = session("id_visiteur");
             $unFraisF = $service->getUnFraisFdunFrais($id_frais, $id_fraisF, $id_visiteur);
 
@@ -194,7 +194,7 @@ class FraisController extends Controller {
 
     public function removeFraisF($id_frais, $id_fraisF) {
         try {
-            $service = new LigneFraisFservice();
+            $service = new LigneFraisFService();
             $id_visiteur = session("id_visiteur");
             $service->deleteFraisFpourUnFrais($id_frais, $id_fraisF, $id_visiteur);
 
@@ -469,8 +469,8 @@ class FraisController extends Controller {
             $fraisService = new FraisService();
             $unFrais = $fraisService->getUnFrais($id_frais, $id_visiteur);
 
-            $fraisFService = new FraisFService();
-            $unFraisF = $fraisFService->getUnFraisFdunFrais($id_frais, $id_fraisF, $id_visiteur);
+            $FraisFService = new FraisFService();
+            $unFraisF = $FraisFService->getUnFraisFdunFrais($id_frais, $id_fraisF, $id_visiteur);
 
             if ($unFrais && isset($unFrais) && $unFraisF && isset($unFraisF)) {
                 if ( ($request->json("quantite_ligne") !== null) && ($request->json("quantite_ligne") > 0) ) {
@@ -514,8 +514,8 @@ class FraisController extends Controller {
             $fraisService = new FraisService();
             $unFrais = $fraisService->getUnFrais($id_frais, $id_visiteur);
 
-            $fraisFService = new FraisFService();
-            $unFraisF = $fraisFService->getUnFraisFdunFrais($id_frais, $id_fraisF, $id_visiteur);
+            $FraisFService = new FraisFService();
+            $unFraisF = $FraisFService->getUnFraisFdunFrais($id_frais, $id_fraisF, $id_visiteur);
 
             if ($unFrais && isset($unFrais) && $unFraisF && isset($unFraisF)) {
                 $service->deleteFraisFpourUnFrais($id_frais, $id_fraisF, $id_visiteur);

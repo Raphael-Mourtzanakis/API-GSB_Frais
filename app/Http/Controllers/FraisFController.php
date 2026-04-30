@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Services\FraisFService;
-use App\Services\LigneFraisFservice;
+use App\Services\LigneFraisFService;
 
 class FraisFController extends Controller {
     public function listFraisF() {
@@ -33,7 +33,7 @@ class FraisFController extends Controller {
     public function validFraisF(Request $request) {
         try {
             $id = $request->input('id');
-            $service = new FraisFservice();
+            $service = new FraisFService();
             if ($id) {
                 $unFraisF = $service->getUnFraisF($id);
             } else {
@@ -66,7 +66,7 @@ class FraisFController extends Controller {
 
     public function removeFraisF($id) {
         try {
-            $service = new FraisFservice();
+            $service = new FraisFService();
             $service->deleteFraisF($id);
 
             return redirect("/Frais_forfait/lister");
