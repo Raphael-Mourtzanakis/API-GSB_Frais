@@ -25,7 +25,7 @@ Route::post('/Visiteur/authentifier', [VisiteurController::class, 'authAPI']);
 Route::post('/Visiteur/deconnecter', [VisiteurController::class, 'logoutAPI'])->middleware('auth:sanctum');
 Route::get('/Visiteur/unauthorized', [VisiteurController::class, 'unauthorizedAPI'])->name('login');
 
-Route::get('/Frais/obtenir/{id}/{idVisiteur)', [FraisController::class, 'getFraisAPI'])->middleware('auth:sanctum');
+Route::get('/Frais/obtenir/{id}/{idVisiteur}', [FraisController::class, 'getFraisAPI'])->middleware('auth:sanctum');
 Route::get('/Frais/lister/{idVisiteur}', [FraisController::class, 'listFraisAPI'])->middleware('auth:sanctum');
 Route::post('/Frais/ajouter', [FraisController::class, 'addFraisAPI'])->middleware('auth:sanctum');
 Route::post('/Frais/modifier', [FraisController::class, 'updateFraisAPI'])->middleware('auth:sanctum');
