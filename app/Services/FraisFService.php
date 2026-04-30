@@ -9,7 +9,7 @@ use App\Exceptions\UserException;
 use function Symfony\Component\String\s;
 use Illuminate\Support\Facades\Session;
 
-class FraisFservice
+class FraisFService
 {
 	public function getListFraisF() {
         try {
