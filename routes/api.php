@@ -58,8 +58,8 @@ Route::get('/Praticien/lister', [PraticienController::class, 'listPraticienAPI']
 
 Route::get('/Praticien/{id_praticien}/specialites/lister', [PraticienController::class, 'listSpecialitesDunPraticienAPI'])->middleware('auth:sanctum');
 Route::get('/Praticien/{id_praticien}/specialites_non_attribuees/lister', [PraticienController::class, 'listSpecialitesNonAttribueesAunPraticienAPI'])->middleware('auth:sanctum');
-Route::post('/Praticien/ajouter/specialite', [PraticienController::class, 'addSpecialiteAunPraticienAPI'])->middleware('auth:sanctum');
-Route::delete('/Praticien/{id_praticien}/supprimer/specialite/{id_specialite}', [PraticienController::class, 'removeSpecialiteAunPraticienAPI'])->middleware('auth:sanctum');
+Route::post('/Praticien/specialite/ajouter', [PraticienController::class, 'addSpecialiteAunPraticienAPI'])->middleware('auth:sanctum');
+Route::delete('/Praticien/specialite/supprimer', [PraticienController::class, 'removeSpecialiteAunPraticienAPI'])->middleware('auth:sanctum');
 
 Route::get('/Specialite/obtenir/{id}', [SpecialiteController::class, 'getSpecialiteAPI'])->middleware('auth:sanctum');
 Route::get('/Specialite/lister', [SpecialiteController::class, 'listSpecialiteAPI'])->middleware('auth:sanctum');

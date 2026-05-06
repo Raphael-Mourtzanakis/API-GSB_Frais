@@ -155,8 +155,8 @@ class PraticienController extends Controller {
     function addSpecialiteAunPraticienAPI(Request $request) {
         try {
             $service = new PraticienService();
-            $id_praticien = $request->input('id_praticien');
-            $id_specialite = $request->input('id_specialite');
+            $id_praticien = $request->json('id_praticien');
+            $id_specialite = $request->json('id_specialite');
 
             $praticien = $service->getUnPraticien($id_praticien);
 
@@ -194,9 +194,12 @@ class PraticienController extends Controller {
         }
     }
 
-    function removeSpecialiteAunPraticienAPI($id_praticien, $id_specialite) {
+    function removeSpecialiteAunPraticienAPI() {
         try {
             $service = new PraticienService();
+
+			$id_praticien = $request->json('id_praticien');
+            $id_specialite = $request->json('id_specialite');
 
             $praticien = $service->getUnPraticien($id_praticien);
 
