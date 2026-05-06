@@ -194,7 +194,7 @@ class PraticienController extends Controller {
         }
     }
 
-    function removeSpecialiteAunPraticienAPI() {
+    function removeSpecialiteAunPraticienAPI(Request $request) {
         try {
             $service = new PraticienService();
 
