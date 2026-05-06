@@ -27,13 +27,13 @@
             <div class="form-group">
                 <label class="col-md-3">Nombre de justificatifs</label>
                 <div class="col-md-6">
-                    <input type="number" name="nb-justificatifs" class="form-control" min="0" value="{{$unFrais->nbjustificatifs}}">
+                    <input type="number" name="nb-justificatifs" class="form-control" min="0" max="999999999" value="{{$unFrais->nbjustificatifs}}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-3">Montant validé</label>
                 <div class="col-md-6">
-                    <div class="money-group"> <input type="number" name="montant-validé" class="form-control" min="0" step="0.01" value="{{$unFrais->montantvalide}}"> € </div>
+                    <div class="money-group"> <input type="number" name="montant-validé" class="form-control" min="0" max="99999999" step="0.01" value="{{$unFrais->montantvalide}}"> € </div>
                 </div>
             </div>
             <div class="form-group">
