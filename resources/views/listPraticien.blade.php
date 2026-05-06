@@ -9,7 +9,7 @@
     <form method="POST" action="{{ url('/Praticien/lister') }}" class="resultat-recherche">
         {{ csrf_field() }}
         <p>Recherche : </p>
-        <input type="text" value="{{$search}}" name="recherche" class="form-control" placeholder="Rechercher un praticien par nom ou spécialité...">
+        <input type="text" value="{{$search}}" name="recherche" class="form-control" placeholder="Rechercher un praticien par nom ou type...">
         <button type="submit" class="btn btn-primary">
             Rechercher
         </button>

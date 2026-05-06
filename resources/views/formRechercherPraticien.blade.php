@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label class="col-md-3">Rechercher</label>
                 <div class="col-md-6">
-                    <input type="text" name="recherche" class="form-control" placeholder="Rechercher un praticien par nom ou spécialité...">
+                    <input type="text" name="recherche" class="form-control" placeholder="Rechercher un praticien par nom ou type...">
                 </div>
             </div>
             <hr>
